@@ -40,7 +40,7 @@ class MainMenu(Frame):
         entry_pass.grid(row=3, column=1, padx=20)
         b.grid(row=4, columnspan=2,padx=20, pady = 20)
 
-        def SignupScreen(self):
+    def SignupScreen(self):
         top = Toplevel(self)
 
         topFrame = Frame(top)
