@@ -1,5 +1,4 @@
-#Controls the bidding System in which a player can pass or bet
-
+# Controls the bidding System in which a player can pass or bet
 class Bid:
     def __init__(self):
         bidTypes = []
@@ -7,7 +6,7 @@ class Bid:
             bidTypes.append(i)
 
     @staticmethod
-    def representBid(bid):
+    def represent_bid(bid):
         type = ["C","D","H","S","NT"]
         bidlst = []
         for i in range(7):
@@ -16,5 +15,9 @@ class Bid:
         return bidlst[bid]
 
     @staticmethod
-    def bidSession():
+    def bid_session():
+        pass
+
+    @staticmethod
+    def validate_bid():
         pass

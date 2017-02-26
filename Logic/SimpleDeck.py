@@ -7,9 +7,9 @@ class Card:
         self.num = i
         # 0=Club 1=Diamond 2=Heart 3=Spade
         self.suit = j
-        #Sorting value used to sort while in hands
+        # Sorting value used to sort while in hands
         self.sortval = (j * 100) + i
-    def getSval(self):
+    def getsval(self):
         return self.sortval
 
     #DEBUG
@@ -32,7 +32,7 @@ class Card:
 
 class BDeck:
     def __init__(self):
-        #Contains Cards
+        # Contains Cards
         self.lst = []
         for i in range(13):
             for j in range(4):
@@ -42,15 +42,15 @@ class BDeck:
     def shuffle(self):
         shuffle(self.lst)
 
-    def giveHand(self):
+    def givehand(self):
         ghand = []
-        #Forcing a Shuffle Here
+        # Forcing a Shuffle Here
         self.shuffle()
         for i in range(13):
             ghand.append(self.lst.pop())
         return ghand
 
-    #DEBUG METHOD Can only be used before cards are distributed to the players
+    # DEBUG METHOD Can only be used before cards are distributed to the players
     def checktop(self):
         dout = "Top card is the " + self.lst[0].checkcard()
         return dout
