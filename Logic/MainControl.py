@@ -2,10 +2,10 @@ from SimpleDeck import *
 from Players import *
 from CardSorter import *
 from TrickSystem import *
+from ScoreSystem import *
 
 # enables prints at certain debug levels 0=off 1=on
 verbose = 1
-debug = 0
 
 # The object that will commence the game
 class GameStart:
@@ -25,46 +25,24 @@ class GameStart:
 
         # HANDLE BIDDING HERE
 
-        # A trick handled here
-
         if verbose:
             print(self.playerlst[0].checkhand() + "\n")
 
-        simpletrick = Trick(5)
-        count = 4
-        if debug:
-            count = 3
-            cardpos = input("Input Card Number: ")
-            cardpos = int(cardpos) - 1
-            card = self.playerlst[0].hand[cardpos]
-
-            bval = simpletrick.validatecard(self.playerlst[0].hand, card)
-
-            if(bval):
-                self.playerlst[0].throwcard(cardpos)
-                print(card.checkcard() + " is thrown.")
-
-
-        for i in range(count):
-
-            if debug:
-                index = i + 1
-            else:
-                index = i
-
-            for j in range(len(self.playerlst[index].hand)):
-                bval = simpletrick.validatecard(self.playerlst[index].hand, self.playerlst[index].hand[j])
-                if bval:
-                    if verbose:
-                        print(self.playerlst[index].hand[j].checkcard() + " is thrown.")
-
-                    self.playerlst[index].throwcard(j)
-                    break
-
-        print("\n" + simpletrick.checktrick())
+        # A trick handled here
+        # 1st argument is trump value, 5= NO TRUMP
+        simpletrick = Trick(5, self.playerlst)
+        simpletrick.starttrick()
 
 
 # Testing
 # Assumptions: Human player is always South, human player is never dummy. For now humnan always goes first.
 bgame = GameStart()
+
+
+
+# Test Scoring
+if verbose:
+    print("\nIf contract level was 3, contract suit was no trump. and 10 tricks were won:")
+    print(str(Score.scoregame(3,4,10)) + " points")
+
 
