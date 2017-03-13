@@ -1,6 +1,9 @@
 from tkinter import *
 import tkinter as tk
 from functools import partial
+from PIL import ImageTk
+from PIL import Image
+
 import random
 
 root = tk.Tk()
@@ -71,6 +74,12 @@ spades = tk.PhotoImage(file='C:\\Users\\JORGEALEJANDRO\\OneDrive\\Python_Tkinter
 club = tk.PhotoImage(file='C:\\Users\\JORGEALEJANDRO\\OneDrive\\Python_Tkinter\\deck\\club.gif')
 diamond = tk.PhotoImage(file='C:\\Users\\JORGEALEJANDRO\\OneDrive\\Python_Tkinter\\deck\\diamond.gif')
 nt = tk.PhotoImage(file='C:\\Users\\JORGEALEJANDRO\\OneDrive\\Python_Tkinter\\deck\\nt.gif')
+#back card face
+image = Image.open('C:\\Users\\JORGEALEJANDRO\\OneDrive\\Python_Tkinter\\deck\\back_card.gif')
+back_card_h = ImageTk.PhotoImage(image)
+image = image.transpose(Image.ROTATE_90)
+back_card = ImageTk.PhotoImage(image)
+#back_card = tk.PhotoImage(().rotate(90))
 
 #here cards are created and shuffled
 ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -104,33 +113,95 @@ player4.sort(key=lambda row: (row[1],row[0]))
 def getImage(ls):
     return ls[1] + str(ls[0])
 
-#player1 hand is diaplay
-card1 = canvas.create_image(280, 700, image=eval(getImage(player1[0])))
-card2 = canvas.create_image(300, 700, image=eval(getImage(player1[1])))
-card3 = canvas.create_image(320, 700, image=eval(getImage(player1[2])))
-card4 = canvas.create_image(340, 700, image=eval(getImage(player1[3])))
-card5 = canvas.create_image(360, 700, image=eval(getImage(player1[4])))
-card6 = canvas.create_image(380, 700, image=eval(getImage(player1[5])))
-card7 = canvas.create_image(400, 700, image=eval(getImage(player1[6])))
-card8 = canvas.create_image(420, 700, image=eval(getImage(player1[7])))
-card9 = canvas.create_image(440, 700, image=eval(getImage(player1[8])))
-card10 = canvas.create_image(460, 700, image=eval(getImage(player1[9])))
-card11 = canvas.create_image(480, 700, image=eval(getImage(player1[10])))
-card12 = canvas.create_image(500, 700, image=eval(getImage(player1[11])))
-card13 = canvas.create_image(520, 700, image=eval(getImage(player1[12])))
+#player South hand is diaplay
+south_hand = list()
+south_hand.append(canvas.create_image(280, 700, image=eval(getImage(player1[0]))))
+south_hand.append(canvas.create_image(300, 700, image=eval(getImage(player1[1]))))
+south_hand.append(canvas.create_image(320, 700, image=eval(getImage(player1[2]))))
+south_hand.append(canvas.create_image(340, 700, image=eval(getImage(player1[3]))))
+south_hand.append(canvas.create_image(360, 700, image=eval(getImage(player1[4]))))
+south_hand.append(canvas.create_image(380, 700, image=eval(getImage(player1[5]))))
+south_hand.append(canvas.create_image(400, 700, image=eval(getImage(player1[6]))))
+south_hand.append(canvas.create_image(420, 700, image=eval(getImage(player1[7]))))
+south_hand.append(canvas.create_image(440, 700, image=eval(getImage(player1[8]))))
+south_hand.append(canvas.create_image(460, 700, image=eval(getImage(player1[9]))))
+south_hand.append(canvas.create_image(480, 700, image=eval(getImage(player1[10]))))
+south_hand.append(canvas.create_image(500, 700, image=eval(getImage(player1[11]))))
+south_hand.append(canvas.create_image(520, 700, image=eval(getImage(player1[12]))))
+#card1 = canvas.create_image(280, 700, image=eval(getImage(player1[0])))
+#card2 = canvas.create_image(300, 700, image=eval(getImage(player1[1])))
+#card3 = canvas.create_image(320, 700, image=eval(getImage(player1[2])))
+#card4 = canvas.create_image(340, 700, image=eval(getImage(player1[3])))
+#card5 = canvas.create_image(360, 700, image=eval(getImage(player1[4])))
+#card6 = canvas.create_image(380, 700, image=eval(getImage(player1[5])))
+#card7 = canvas.create_image(400, 700, image=eval(getImage(player1[6])))
+#card8 = canvas.create_image(420, 700, image=eval(getImage(player1[7])))
+#card9 = canvas.create_image(440, 700, image=eval(getImage(player1[8])))
+#card10 = canvas.create_image(460, 700, image=eval(getImage(player1[9])))
+#card11 = canvas.create_image(480, 700, image=eval(getImage(player1[10])))
+#card12 = canvas.create_image(500, 700, image=eval(getImage(player1[11])))
+#card13 = canvas.create_image(520, 700, image=eval(getImage(player1[12])))
+#player West hand is diaplay
+card14 = canvas.create_image(100, 280, image=back_card)
+card15 = canvas.create_image(100, 300, image=back_card)
+card16 = canvas.create_image(100, 320, image=back_card)
+card17 = canvas.create_image(100, 340, image=back_card)
+card18 = canvas.create_image(100, 360, image=back_card)
+card19 = canvas.create_image(100, 380, image=back_card)
+card20 = canvas.create_image(100, 400, image=back_card)
+card21 = canvas.create_image(100, 420, image=back_card)
+card22 = canvas.create_image(100, 440, image=back_card)
+card23 = canvas.create_image(100, 460, image=back_card)
+card24 = canvas.create_image(100, 480, image=back_card)
+card25 = canvas.create_image(100, 500, image=back_card)
+card26 = canvas.create_image(100, 520, image=back_card)
+#player East hand is diaplay
+card27 = canvas.create_image(700, 280, image=back_card)
+card28 = canvas.create_image(700, 300, image=back_card)
+card29 = canvas.create_image(700, 320, image=back_card)
+card30 = canvas.create_image(700, 340, image=back_card)
+card31 = canvas.create_image(700, 360, image=back_card)
+card32 = canvas.create_image(700, 380, image=back_card)
+card33 = canvas.create_image(700, 400, image=back_card)
+card34 = canvas.create_image(700, 420, image=back_card)
+card35 = canvas.create_image(700, 440, image=back_card)
+card36 = canvas.create_image(700, 460, image=back_card)
+card37 = canvas.create_image(700, 480, image=back_card)
+card38 = canvas.create_image(700, 500, image=back_card)
+card39 = canvas.create_image(700, 520, image=back_card)
+#player North hand is diaplay
+card40 = canvas.create_image(280, 100, image=back_card_h)
+card41 = canvas.create_image(300, 100, image=back_card_h)
+card42 = canvas.create_image(320, 100, image=back_card_h)
+card43 = canvas.create_image(340, 100, image=back_card_h)
+card44 = canvas.create_image(360, 100, image=back_card_h)
+card45 = canvas.create_image(380, 100, image=back_card_h)
+card46 = canvas.create_image(400, 100, image=back_card_h)
+card47 = canvas.create_image(420, 100, image=back_card_h)
+card48 = canvas.create_image(440, 100, image=back_card_h)
+card49 = canvas.create_image(460, 100, image=back_card_h)
+card50 = canvas.create_image(480, 100, image=back_card_h)
+card51 = canvas.create_image(500, 100, image=back_card_h)
+card52 = canvas.create_image(520, 100, image=back_card_h)
 
 #class for bidding table
 class Popout(tk.Frame):
     def __init__(self, parent):
-        
-        tk.Frame.__init__(self, parent, background="black", padx=10, pady=10)
+
+       
+        self.rank=0           #last rank during bidding
+        self.myrank=0         #last rank of player 1 (south) during bidding
+        self.n_pass=0         #number of times player pass in row
+        self.suit=""          #last suit of bidding
+        self.mysuit=""        #last suit of player 1 (south) during bidding
+        tk.Frame.__init__(self, parent, background="black", padx=10, pady=10)#padx=10, pady=10)#background="black", padx=10, pady=10)
         
         title = tk.Label(self, text="Bidding Table", font=("Helvetica", 16),
                          background="black", foreground="white")
         
         
-        double_btn = tk.Button(self, text="Pass", background="black", foreground="white")
-        pass_btn = tk.Button(self, text="Double", background="black", foreground="white")
+        pass_btn = tk.Button(self, text="Pass", background="black", foreground="white",command=self.pass_clic)
+        double_btn = tk.Button(self, text="Double", background="black", foreground="white")
         close_btn = tk.Button(self, text="Close", background="black", foreground="white",command=self.close)
 
         self.grid_columnconfigure(0, weight=1)
@@ -144,25 +215,32 @@ class Popout(tk.Frame):
             tk.Label(self,text=str(a+1), font=("Helvetica", 12),
                      background="black", foreground="white").grid(row=(a+1), column=0)
             
-            self.button.append(tk.Button(self, image=club, command=partial(self.clic,5*a)))
+            self.button.append(tk.Button(self, image=club, command=partial(self.clic,5*a, a+1,"club")))
             self.button[-1].grid(row=(a+1), column=(1))
-            self.button.append(tk.Button(self, image=diamond, command=partial(self.clic,5*a+1)))
+            self.button.append(tk.Button(self, image=diamond, command=partial(self.clic,5*a+1,a+1,"diamond")))
             self.button[-1].grid(row=(a+1), column=(2))
-            self.button.append(tk.Button(self, image=heart, command=partial(self.clic,5*a+2)))
+            self.button.append(tk.Button(self, image=heart, command=partial(self.clic,5*a+2,a+1,"heart")))
             self.button[-1].grid(row=(a+1), column=(3))
-            self.button.append(tk.Button(self, image=spades, command=partial(self.clic,5*a+3)))
+            self.button.append(tk.Button(self, image=spades, command=partial(self.clic,5*a+3,a+1,"spade")))
             self.button[-1].grid(row=(a+1), column=(4))
-            self.button.append(tk.Button(self, image=nt, command=partial(self.clic,5*a+4)))
+            self.button.append(tk.Button(self, image=nt, command=partial(self.clic,5*a+4,a+1,"nt")))
             self.button[-1].grid(row=(a+1), column=(5))
 
-        
-        double_btn.grid(row=8, column=0, columnspan=2)#sticky="ew")
-        pass_btn.grid(row=8, column=2, columnspan=2)#sticky="ew")
+
+        pass_btn.grid(row=8, column=0, columnspan=2)#sticky="ew")
+        double_btn.grid(row=8, column=2, columnspan=2)#sticky="ew")
         close_btn.grid(row=8, column=4, columnspan=2)#sticky="ew", padx=10)
+        
+        south = tk.Label(self, text="South", font=("Helvetica", 16),
+                         background="black", foreground="white")
+        south.grid(row=10, column=2, columnspan=3, sticky="nsew")
+
+        
 
     #disable button after clic
-    def clic(self,n):
-        
+    def clic(self,n,clic_rank,suit):
+       
+        print("Rank_init: " + str(self.rank) + " Suit_init: " + self.suit + " NPass: " + str(self.n_pass))
         for x in range (n+1):
             if self.button[x]['state'] != 'disabled':
                 #print(self.button[x]['state'])
@@ -170,6 +248,23 @@ class Popout(tk.Frame):
                 self.button[x].config(state=DISABLED)
                 #print(self.button[x]['state'])
                 #print(x)
+        self.rank = self.myrank = clic_rank
+        self.suit = self.mysuit = suit
+        self.clear_pass()
+        
+        #print("Rank_afterClick: " + str(self.myrank) + " and suit: " + self.mysuit)
+
+    def pass_clic(self):
+       self.n_pass += 1
+       self.check_pass()
+
+    def check_pass(self):
+       if self.n_pass == 3:
+          self.close()
+
+    def clear_pass(self):
+       self.n_pass = 0
+       
     #Close popping frame
     def close(self):
         self.grid_forget()
