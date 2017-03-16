@@ -8,7 +8,7 @@ class Home:
         master.minsize(width=800, height=680)
         master.maxsize(width=800, height=680)
 
-        self.background_image= PhotoImage(file = "C:\\Users\\daniel\\Desktop\\Python Capstone\\Bridge-game-for-all.png")
+        self.background_image= PhotoImage(file = "Bridge-Application\\Home Files\\Bridge-game-for-all.png")
         self.background_label = tk.Label(master, image=self.background_image)
         self.background_label.image = self.background_image
         self.background_label.place(x=0,y=0,relwidth=1,relheight=1)
@@ -21,7 +21,7 @@ class Home:
             if('play_label' in globals() ):
                 play_label.destroy()
             
-            self.play_image = PhotoImage(file = "C:\\Users\\daniel\\Desktop\\Python Capstone\\play.png")
+            self.play_image = PhotoImage(file = "Bridge-Application\\Home Files\\play.png")
             self.display = self.play_image.subsample(5,5)
 
             global play_label
@@ -276,7 +276,7 @@ class Home:
 
         #--- Store ---
         
-        self.storePhoto = PhotoImage(file="C:\\Users\\daniel\\Desktop\\Python Capstone\\market-store-icon.png")
+        self.storePhoto = PhotoImage(file="Bridge-Application\\Home Files\\market-store-icon.png")
 
         #Decreases the size of original photo by using every 8th pixel in each row and column
         self.displayStorePhoto = self.storePhoto.subsample(8,8) 
