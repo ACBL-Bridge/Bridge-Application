@@ -21,6 +21,32 @@ class Player:
     def throwcard(self, cardpos):
         self.hand.remove(self.hand[cardpos])
 
+    # Converts the hand to the necessary string for the Bride API
+    def ohand(self):
+        # The string to send to Bridge API
+        ostr = ''
+        suitflag = 3
+
+        for i in self.hand:
+            if i.suit != suitflag:
+                for j in range(suitflag - i.suit):
+                    ostr += '.'
+                suitflag = i.suit
+
+            if i.num == 14:
+                ostr += 'a'
+            elif i.num == 13:
+                ostr += 'k'
+            elif i.num == 12:
+                ostr += 'q'
+            elif i.num == 11:
+                ostr += 'j'
+            elif i.num == 10:
+                ostr += 't'
+            else:
+                ostr += str(i.num)
+        return ostr
+
     # DEBUG
     def checkhand(self):
         dout = ""

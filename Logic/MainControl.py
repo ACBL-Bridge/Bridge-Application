@@ -27,6 +27,7 @@ class GameStart:
 
         if verbose:
             print(self.playerlst[0].checkhand() + "\n")
+            print(self.playerlst[0].ohand() + "\n")
 
         # A trick handled here
         # 1st argument is trump value, 5= NO TRUMP
@@ -40,9 +41,6 @@ bgame = GameStart()
 
 
 
-# Test Scoring
-if verbose:
-    print("\nIf contract level was 3, contract suit was no trump. and 10 tricks were won:")
-    print(str(Score.scoregame(3,4,10)) + " points")
+
 
 
