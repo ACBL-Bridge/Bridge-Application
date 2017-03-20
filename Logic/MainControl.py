@@ -25,6 +25,7 @@ class GameStart:
             self.playerlst[i].collecthand(CardSort.csort(self.gamedeck.givehand()))
 
         if verbose:
+            print("South Cards")
             print(self.playerlst[0].checkhand() + "\n")
 
         # Bid Session
@@ -39,7 +40,7 @@ class GameStart:
 
 
 # Testing
-# Assumptions: Human player is always South, human player is never dummy. For now human always goes first.
+# Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 bgame = GameStart()
 
 

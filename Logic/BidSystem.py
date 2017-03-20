@@ -18,6 +18,8 @@ class Bid:
                 bidlst.append(str(i) + "-" + j)
         return bidlst[bid]
 
+
+    # This function returns a list containing the history of a bidding session, the declarer, and winning bid.
     @staticmethod
     def bid_session(playerlst):
         pov = ['S','W','N','E']
@@ -41,6 +43,9 @@ class Bid:
                 print("Place Bid: ", end='')
 
             playerbid = input()
+            if h != '':
+                playerbid = '-' + playerbid
+
             h += playerbid
 
             if(h[-5:] == 'p-p-p'):
@@ -83,7 +88,7 @@ class Bid:
         highval = ''
         dec = -1
         for i in range(len(hlst)):
-            if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r'):
+            if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r' and hlst[i] != 'xx'):
                 highval = hlst[i]
                 dec = i % 4
 
@@ -93,7 +98,13 @@ class Bid:
             #3 Passes in the beginning
             else:
                 print('NO GAME')
-        return h
+
+        olst = ['NO GAME']
+        if dec >= 0:
+            olst = [h, pov[dec], highval]
+
+
+        return olst
 
 
     @staticmethod

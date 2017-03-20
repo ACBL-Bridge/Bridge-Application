@@ -1,4 +1,4 @@
-#Testing Curl
+#Testing Curl and other python properties
 import pycurl
 from ScoreSystem import *
 from Players import *
