@@ -47,12 +47,14 @@ class Bid:
             if(h[-1] == 'p'):
                 oflag += 1
             else:
+                print('ERR: ' + h[-1])
                 oflag = 0
 
             if(oflag == 3):
                 break
 
             for i in range(3):
+                print(str(oflag))
                 buffer = BytesIO()
                 c = pycurl.Curl()
                 c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp%3) + 1] + '&h='+ h + '&d=' + d + '&v='+ v +'&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
@@ -68,9 +70,10 @@ class Bid:
                 if verbose:
                     print(pov[(cp%3) + 1]+ " bids = " + cbid)
 
-                if (h[-1] == 'p'):
+                if (cbid == 'p'):
                     oflag += 1
                 else:
+                    print('ERR: ' + h[-1])
                     oflag = 0
 
                 if (oflag == 3):
@@ -79,7 +82,7 @@ class Bid:
                 c.close()
 
 
-                print(str(oflag))
+
             if (oflag == 3):
                 break
         print(h)
