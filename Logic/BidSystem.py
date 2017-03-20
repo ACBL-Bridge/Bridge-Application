@@ -35,26 +35,19 @@ class Bid:
         output = ""
         cp = 0
         while True:
-            oflag = 0
             playerbid = 0
 
             if verbose:
-                print("Place Bid: ")
+                print("Place Bid: ", end='')
 
             playerbid = input()
             h += playerbid
 
-            if(h[-1] == 'p'):
-                oflag += 1
-            else:
-                print('ERR: ' + h[-1])
-                oflag = 0
-
-            if(oflag == 3):
+            if(h[-5:] == 'p-p-p'):
                 break
 
             for i in range(3):
-                print(str(oflag))
+                cbid = '';
                 buffer = BytesIO()
                 c = pycurl.Curl()
                 c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp%3) + 1] + '&h='+ h + '&d=' + d + '&v='+ v +'&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
@@ -63,29 +56,45 @@ class Bid:
                 output = str(buffer.getvalue()).split()
 
                 # Getting the specific value in the xml document
-                print(output)
-                cbid = output[18][4:].strip('"')
-                cbid = cbid.lower()
-                h += "-" + cbid
+                if(len(output) >= 17):
+                    cbid = output[18][4:].strip('"')
+                    cbid = cbid.lower()
+                    h += "-" + cbid
+                else:
+                    print("ERROR PARSING XML")
+                    break
+
                 if verbose:
                     print(pov[(cp%3) + 1]+ " bids = " + cbid)
 
-                if (cbid == 'p'):
-                    oflag += 1
-                else:
-                    print('ERR: ' + h[-1])
-                    oflag = 0
-
-                if (oflag == 3):
+                if (h[-5:] == 'p-p-p'):
                     break
+
                 cp += 1
                 c.close()
 
-
-
-            if (oflag == 3):
+            if (h[-5:] == 'p-p-p'):
                 break
-        print(h)
+
+
+        # Analyze history
+
+        hlst = h.split("-")
+        highval = ''
+        dec = -1
+        for i in range(len(hlst)):
+            if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r'):
+                highval = hlst[i]
+                dec = i % 4
+
+        if verbose:
+            if dec >= 0:
+                print(pov[dec] + " ends bidding with: " + highval)
+            #3 Passes in the beginning
+            else:
+                print('NO GAME')
+        return h
+
 
     @staticmethod
     def validate_bid():

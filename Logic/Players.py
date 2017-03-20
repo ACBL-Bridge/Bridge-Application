@@ -45,6 +45,9 @@ class Player:
                 ostr += 't'
             else:
                 ostr += str(i.num)
+        if (ostr.count(".") < 3):
+            for i in range(3 - ostr.count(".")):
+                ostr += "."
         return ostr
 
     # DEBUG

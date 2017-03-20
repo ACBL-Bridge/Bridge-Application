@@ -1,9 +1,39 @@
 #Testing Curl
 import pycurl
 from ScoreSystem import *
+from Players import *
+from SimpleDeck import *
+from CardSorter import *
 from io import BytesIO
 
 verbose = 0
+
+gamedeck = BDeck()
+gamedeck.shuffle()
+
+playerlst = []
+for i in range(4):
+    playerlst.append(Player())
+    playerlst[i].designation = i
+    playerlst[i].collecthand(CardSort.csort(gamedeck.givehand()))
+    if verbose:
+        print(playerlst[0].checkhand() + "\n")
+
+
+playerlst[0].hand[0] = Card(14,2)
+playerlst[0].hand[1] = Card(13,2)
+playerlst[0].hand[2] = Card(12,2)
+playerlst[0].hand[3] = Card(11,2)
+playerlst[0].hand[4] = Card(10,2)
+playerlst[0].hand[5] = Card(14,0)
+playerlst[0].hand[6] = Card(13,0)
+playerlst[0].hand[7] = Card(12,0)
+playerlst[0].hand[8] = Card(11,0)
+playerlst[0].hand[9] = Card(10,0)
+playerlst[0].hand[10] = Card(9,0)
+playerlst[0].hand[11] = Card(8,0)
+playerlst[0].hand[12] = Card(7,0)
+
 c = pycurl.Curl()
 #Current Player
 pov ='S'
@@ -14,7 +44,7 @@ d = 'e'
 #Vulnerability
 v = 'B'
 #South Hand
-s = ''
+s = playerlst[0].ohand()
 #West Hand
 w = ''
 #North Hand
@@ -27,11 +57,7 @@ o = 'state1'
 src = 'eric'
 
 
-
-strr = "TESTP"
-
-print(strr[-1])
-
+print(s)
 
 #buffer = BytesIO()
 #c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=S&h=&d=s&v=B&n=kt982.q3.k62.t86&s=aq73.94.ajt983.a&e=j5.jt872.754.972&w=64.ak65.q.kqj543&o=state1&src=eric')
