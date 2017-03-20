@@ -3,6 +3,7 @@ from Players import *
 from CardSorter import *
 from TrickSystem import *
 from ScoreSystem import *
+from BidSystem import *
 
 # enables prints at certain debug levels 0=off 1=on
 verbose = 1
@@ -23,20 +24,22 @@ class GameStart:
             #Sorts Hand for the players
             self.playerlst[i].collecthand(CardSort.csort(self.gamedeck.givehand()))
 
-        # HANDLE BIDDING HERE
-
         if verbose:
             print(self.playerlst[0].checkhand() + "\n")
-            print(self.playerlst[0].ohand() + "\n")
+
+        # Bid Session
+        osession = Bid.bid_session(self.playerlst)
+
+
 
         # A trick handled here
         # 1st argument is trump value, 5= NO TRUMP
-        simpletrick = Trick(5, self.playerlst)
-        simpletrick.starttrick()
+        #simpletrick = Trick(5, self.playerlst)
+        #simpletrick.starttrick()
 
 
 # Testing
-# Assumptions: Human player is always South, human player is never dummy. For now humnan always goes first.
+# Assumptions: Human player is always South, human player is never dummy. For now human always goes first.
 bgame = GameStart()
 
 
