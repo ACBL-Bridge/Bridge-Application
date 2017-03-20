@@ -1,8 +1,13 @@
 First task is complete. Created: Deck, Card, and player objects that interact in a way that will prepare more code for the bridge game. 
-Hand sorting was also quite simple to accomplish by giving each card a certain value and giving more “weight” to the suit of the card.
+Hand sorting was also quite simple to accomplish by giving each card a certain value and giving more "weight" to the suit of the card.
 
 Second task is complete. Function to check if card is valid for a trick is in TrickSystem.
 
 Third task is complete. Function to score a game is in ScoreSystem.
 
-Will now look into animation with Tkinter.
+
+Communication with the bridge base api is entering a streamlined phase. A Bidding session is complete. Next step is the handling of the tricks.
+
+
+--Later
+Animation with Tkinter.
