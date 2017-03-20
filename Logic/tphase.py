@@ -28,9 +28,9 @@ src = 'eric'
 
 
 
-strr = "TEST"
+strr = "TESTP"
 
-print(strr[-2:])
+print(strr[-1])
 
 
 #buffer = BytesIO()
