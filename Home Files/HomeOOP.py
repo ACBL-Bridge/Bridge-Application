@@ -1,34 +1,114 @@
-import tkinter as tk
-from tkinter import PhotoImage
+#import tkinter as tk
+from DailyChallengeDays import *
+from tkinter import *
 
 class Home:
     def __init__(self, master):
         #Initialize window size and background image
         self.master = master
-        master.minsize(width=800, height=680)
-        master.maxsize(width=800, height=680)
+        width = 800
+        height = 680
+        master.minsize(width, height)
+        master.maxsize(width, height)
 
-        self.background_image= PhotoImage(file = "Bridge-Application\\Home Files\\Bridge-game-for-all.png")
-        self.background_label = tk.Label(master, image=self.background_image)
+        self.background_image= PhotoImage(file = "C:\\Python Capstone\\Bridge-game-for-all.png")
+        self.background_label = Label(master, image=self.background_image)
         self.background_label.image = self.background_image
         self.background_label.place(x=0,y=0,relwidth=1,relheight=1)
 
         #Creates the frame that the four buttons will appear on
-        self.buttonFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+        self.buttonFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
 
-        #Play button method for daily challenge
-        def playDaily():
-            if('play_label' in globals() ):
-                play_label.destroy()
+        global completed
+        completed = 0
+        
+        global score
+        score = 0
+
+        
+        def playDailyActionWin(dayCounter):
+            global completed
+            global score
             
-            self.play_image = PhotoImage(file = "Bridge-Application\\Home Files\\play.png")
-            self.display = self.play_image.subsample(5,5)
+            if(dayList[dayCounter].getAttempted() == False): 
+                completed += 1
+                score += 2
+                dayList[dayCounter].setAttempted()
+                dayList[dayCounter].setCompleted()
+            else:
+                if(dayList[dayCounter].getCompleted() == False):      
+                    completed += 1
+                    score += 1
+                    dayList[dayCounter].setCompleted()
 
-            global play_label
-            play_label = tk.Button(master, image=self.display)
-            play_label.image = self.display
+            top2.destroy()
+            top1.destroy()
 
-            play_label.place(x=325, y=100)
+            statsFrame.destroy()
+            dailyFrame.destroy()
+
+            del globals()['statsFrame']
+            del globals()['dailyFrame']
+            
+            dailyPress()
+
+        def playDailyActionLose(dayCounter):
+            if(dayList[dayCounter].getAttempted() == False):
+                dayList[dayCounter].setAttempted()
+
+            top2.destroy()
+            top1.destroy()
+            
+        
+        def playDailyAction(dayCounter):
+            global top2
+            
+            top2 = Toplevel()
+            top2.title("Results Screen")
+
+            msg = Message(top2, text="Did you win or lose?")
+            msg.pack()
+
+            winButton = Button(top2, text="WIN", command=lambda: playDailyActionWin(dayCounter))
+            loseButton = Button(top2, text="LOSE", command=lambda: playDailyActionLose(dayCounter))
+            
+            winButton.pack()
+            loseButton.pack()
+
+            ws = self.master.winfo_screenwidth()
+            hs = self.master.winfo_screenheight()
+
+            x = (ws/2) - (width/2)
+            y = (hs/2) - (height/2)
+
+            top2.geometry('%dx%d+%d+%d' % (width/3 + 50, height/3, x-250, y+100))
+        
+        #Play button method for daily challenge
+        def playDailyFrame(dayCounter):
+            global top1
+
+            top1 = Toplevel()
+            top1.title("Daily Challenge")
+
+            #This will have to change eventually, maybe pass a string
+            #into playDaily which will have the message for the player
+            msg = Message(top1, text="This is a placeholder") 
+            msg.pack()
+
+            playButton = Button(top1, text="Play", command=lambda: playDailyAction(dayCounter))
+            cancelButton = Button(top1, text="Cancel", command=top1.destroy)
+
+            playButton.pack()
+            cancelButton.pack()
+
+            ws = self.master.winfo_screenwidth()
+            hs = self.master.winfo_screenheight()
+
+            x = (ws/2) - (width/2)
+            y = (hs/2) - (height/2)
+
+            top1.geometry('%dx%d+%d+%d' % (width/3 + 50, height/3, x-250, y+100))
+            
         #Time method(s)
         def getTime():
             import datetime
@@ -90,10 +170,10 @@ class Home:
             
             if 'playFrame' not in globals():
                 global playFrame
-                playFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.random = tk.Button(playFrame, text="RANDOM GAME", width=20)
-                self.friend = tk.Button(playFrame, text="PLAY WITH FRIENDS", width=20)
-                self.robot = tk.Button(playFrame, text="PLAY WITH ROBOTS", width=20)
+                playFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+                self.random = Button(playFrame, text="RANDOM GAME", width=20)
+                self.friend = Button(playFrame, text="PLAY WITH FRIENDS", width=20)
+                self.robot = Button(playFrame, text="PLAY WITH ROBOTS", width=20)
 
                 playFrameRow = 5
                 for row in range(playFrameRow):
@@ -122,10 +202,9 @@ class Home:
             if 'dailyFrame' and 'statsFrame' not in globals():
                 global dailyFrame
                 global statsFrame
-                dailyFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                statsFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=100, height=100)
-                '''self.tempLabel = tk.Label(dailyFrame, text="DAILY CHALLENGE PLACEHOLDER")
-                self.tempLabel.grid(row=0, column=0)'''
+                dailyFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+                statsFrame = Frame(master, borderwidth=5, relief="sunken", width=100, height=100)
+
                 self.dailyRows = 6
                 self.dailyCols = 7
 
@@ -144,16 +223,18 @@ class Home:
                 self.currDay = self.currTimeData[2]
 
                 #Label and place what month of the year it is
-                self.monthLabel = tk.Label(dailyFrame, text=self.month)
+                self.monthLabel = Label(dailyFrame, text=self.month)
                 self.monthLabel.grid(row=0, column=3)
 
+                #LOOK INTO MAKING A CLASS FOR DAILY CHALLENGES - INCLUDE ATTEMPTED AND COMPLETED VARS
                 dayCounter = 1
                 for tempRow in range(1, self.dailyRows):
                         
                         for tempCol in range(self.dailyCols):
                                 if(dayCounter == self.days + 1):
                                         break
-                                self.tempButton = tk.Button(dailyFrame, text= str(dayCounter),width=4, command=playDaily)
+
+                                self.tempButton = Button(dailyFrame, text= str(dayCounter),width=4, command= lambda day=dayCounter: playDailyFrame(day))
                                 if(dayCounter > self.currDay):
                                     self.tempButton['state'] = 'disabled'
                                 dayCounter += 1
@@ -166,13 +247,13 @@ class Home:
                 for col in range(self.dailyCols):
                         statsFrame.grid_columnconfigure(col)
 
-                self.statsHeader = tk.Label(statsFrame, text="DAILY CHALLENGE STATS")
+                self.statsHeader = Label(statsFrame, text="DAILY CHALLENGE STATS")
                 self.statsHeader.grid(row=0, column=0, sticky='we')
 
-                self.completed = tk.Label(statsFrame, text="Completed: ")
+                self.completed = Label(statsFrame, text="Completed: "+str(completed))
                 self.completed.grid(row=1, column=0, sticky='w')
 
-                self.score = tk.Label(statsFrame, text="Monthly Score: ")
+                self.score = Label(statsFrame, text="Monthly Score: "+str(score))
                 self.score.grid(row=2, column=0, sticky='w')
 
                 dailyFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
@@ -197,8 +278,8 @@ class Home:
                 
             if 'tournFrame' not in globals():
                 global tournFrame
-                tournFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.tempLabel = tk.Label(tournFrame, text="TOURNAMENT FRAME PLACEHOLDER")
+                tournFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+                self.tempLabel = Label(tournFrame, text="TOURNAMENT FRAME PLACEHOLDER")
                 self.tempLabel.grid(row=0, column=0)
 
                 tournFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
@@ -222,17 +303,24 @@ class Home:
                         
             if 'leaderFrame' not in globals():
                 global leaderFrame
-                leaderFrame = tk.Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.tempLabel = tk.Label(leaderFrame, text="LEADERBOARD FRAME PLACEHOLDER")
+                leaderFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+                self.tempLabel = Label(leaderFrame, text="LEADERBOARD FRAME PLACEHOLDER")
                 self.tempLabel.grid(row=0, column=0)
 
                 leaderFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
 
+        global dayList
+        dayList = [] #use for daily challenge
+        timeTup = getTime()
+        for day in range(1,timeTup[1] + 1):
+            dayList.append(DailyChallengeDays(day))
+        
+
         #Creates the buttons, labels them, and associates appropriate methods with each button
-        self.play = tk.Button(self.buttonFrame, text="PLAY", width=20, command=playPress)
-        self.daily = tk.Button(self.buttonFrame, text="DAILY CHALLENGE", width=20, command=dailyPress)
-        self.tourn = tk.Button(self.buttonFrame, text="TOURNAMENTS", width=20, command=tournPress)
-        self.leader = tk.Button(self.buttonFrame, text="LEADERBOARD", width=20, command=leaderPress)
+        self.play = Button(self.buttonFrame, text="PLAY", width=20, command=playPress)
+        self.daily = Button(self.buttonFrame, text="DAILY CHALLENGE", width=20, command=dailyPress)
+        self.tourn = Button(self.buttonFrame, text="TOURNAMENTS", width=20, command=tournPress)
+        self.leader = Button(self.buttonFrame, text="LEADERBOARD", width=20, command=leaderPress)
 
         #Creates rows in buttonFrame to allow for button positioning in the frame
         self.buttonRow = 7
@@ -256,8 +344,8 @@ class Home:
 
         master.grid()
         
-        self.playMsg = tk.Label(master, text="LET'S PLAY BRIDGE")
-        self.userName = tk.Label(master, text="Logged in as: ")
+        self.playMsg = Label(master, text="LET'S PLAY BRIDGE")
+        self.userName = Label(master, text="Logged in as: ")
        
         self.userName.grid(column=0, row=0)
         self.playMsg.place(x=350, y=0) #use place instead of grid so that button presses wont reposition msg
@@ -269,28 +357,29 @@ class Home:
         #--- Menu Creation ---
 
         self.optionList=('View Profile', 'Tourney Results', 'Tutorial', 'Settings', 'Log Out')
-        self.menu = tk.StringVar()
+        self.menu = StringVar()
         self.menu.set('Options')
-        self.drop = tk.OptionMenu(master, self.menu, *self.optionList)
+        self.drop = OptionMenu(master, self.menu, *self.optionList)
         self.drop.place(x=600, y=0)
 
         #--- Store ---
         
-        self.storePhoto = PhotoImage(file="Bridge-Application\\Home Files\\market-store-icon.png")
+        self.storePhoto = PhotoImage(file="C:\\Python Capstone\\market-store-icon.png")
 
         #Decreases the size of original photo by using every 8th pixel in each row and column
         self.displayStorePhoto = self.storePhoto.subsample(8,8) 
 
-        self.store = tk.Button(master, image=self.displayStorePhoto)
+        self.store = Button(master, image=self.displayStorePhoto)
         self.store.image = self.storePhoto #keep reference to picture, other will be garbage collected
 
         self.store.place(x=600, y=530)
         
 
 def main():
-    root = tk.Tk()
+    root = Tk()
     app = Home(root)
     root.mainloop()
 
 if __name__ == '__main__':
     main()
+
