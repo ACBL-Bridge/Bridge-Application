@@ -35,11 +35,13 @@ class Home:
                 score += 2
                 dayList[dayCounter].setAttempted()
                 dayList[dayCounter].setCompleted()
+                dayList[dayCounter].setStatus("first")
             else:
                 if(dayList[dayCounter].getCompleted() == False):      
                     completed += 1
                     score += 1
                     dayList[dayCounter].setCompleted()
+                    dayList[dayCounter].setStatus("complete")
 
             top2.destroy()
             top1.destroy()
@@ -55,9 +57,18 @@ class Home:
         def playDailyActionLose(dayCounter):
             if(dayList[dayCounter].getAttempted() == False):
                 dayList[dayCounter].setAttempted()
+                dayList[dayCounter].setStatus("incomplete")
 
             top2.destroy()
             top1.destroy()
+
+            statsFrame.destroy()
+            dailyFrame.destroy()
+
+            del globals()['statsFrame']
+            del globals()['dailyFrame']
+
+            dailyPress()
             
         
         def playDailyAction(dayCounter):
@@ -227,15 +238,26 @@ class Home:
                 self.monthLabel.grid(row=0, column=3)
 
                 #LOOK INTO MAKING A CLASS FOR DAILY CHALLENGES - INCLUDE ATTEMPTED AND COMPLETED VARS
-                dayCounter = 1
+                dayCounter = 0
                 for tempRow in range(1, self.dailyRows):
                         
                         for tempCol in range(self.dailyCols):
-                                if(dayCounter == self.days + 1):
+                                if(dayCounter > self.days-1):
                                         break
 
-                                self.tempButton = Button(dailyFrame, text= str(dayCounter),width=4, command= lambda day=dayCounter: playDailyFrame(day))
-                                if(dayCounter > self.currDay):
+                                self.tempButton = Button(dailyFrame, text= str(dayCounter+1),width=4, command= lambda day=dayCounter: playDailyFrame(day))
+
+                                if(dayList[dayCounter].getStatus() == "first"):
+                                    self.tempButton.configure(bg='green')
+                                elif(dayList[dayCounter].getStatus() == "complete"):
+                                    self.tempButton.configure(bg='blue')
+                                elif(dayList[dayCounter].getStatus() == "incomplete"):
+                                    self.tempButton.configure(bg='yellow')
+                                else:
+                                    if(dayCounter <= self.currDay-1):
+                                        self.tempButton.configure(bg='red')
+
+                                if(dayCounter > self.currDay-1):
                                     self.tempButton['state'] = 'disabled'
                                 dayCounter += 1
                                 self.tempButton.grid(row=tempRow, column=tempCol)

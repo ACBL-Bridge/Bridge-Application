@@ -3,6 +3,7 @@ class DailyChallengeDays:
         self.day = day
         self.attempted = False
         self.completed = False
+        self.status = ""
 
     def setDay(self,day):
         self.day = day
@@ -13,6 +14,9 @@ class DailyChallengeDays:
     def setCompleted(self):
         self.completed = True
 
+    def setStatus(self,currStatus):
+        self.status = currStatus
+
     def getDay(self):
         return self.day
 
@@ -21,3 +25,6 @@ class DailyChallengeDays:
 
     def getCompleted(self):
         return self.completed
+
+    def getStatus(self):
+        return self.status
