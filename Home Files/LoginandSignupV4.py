@@ -18,11 +18,11 @@ class MainMenu(Frame):
         bkgrd_label.place(x=0,y=0,relwidth=1, relheight=1)
         
         titleLabel = Label(parent, text="LET'S PLAY BRIDGE",fg ="black" ,font ='Arial 36').pack(side="top", padx=20)
-        loginButton = Button(parent, text="Log in",fg ="blue",font ="Arial 14",command= self.LoginScreen).pack(padx=20)
+        loginButton = Button(parent, text="Log in",fg ="blue",font ="Arial 14",command=lambda: self.LoginScreen(parent)).pack(padx=20)
         signupButton = Button(parent, text="Sign up", fg ="blue",font ="Arial 14",command= self.SignupScreen).pack(padx=20)
         quitButton = Button(parent, text="Quit",font ="Arial 14",command= quit).pack(side="bottom", padx=20)
 
-    def LoginScreen(self):
+    def LoginScreen(self,parent):
         global entry_user
         global entry_pass
         top = Toplevel(self)
@@ -43,7 +43,7 @@ class MainMenu(Frame):
         passLabel = Label(middleFrame, text='Password:')
         entry_user = Entry((middleFrame) ) # For DB
         entry_pass = Entry(middleFrame, show ='*') # For DB
-        b = Button(bottomFrame, text="Log in",command=lambda: get_Login_input())
+        b = Button(bottomFrame, text="Log in",command=lambda: get_Login_input(self,parent))
 
         #Location of the Widgets in their frames
         label.pack(side="top", fill="both", expand=True, padx=20, pady=20)
@@ -55,13 +55,12 @@ class MainMenu(Frame):
 
 ###############################################DATABASE Check Login!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         def go_to_HomePage():
-            '''#self.destroy()
             root = Tk()
             app = Home(root)
-            root.mainloop()'''
+            root.mainloop()
 
 
-        def get_Login_input():
+        def get_Login_input(self,parent):
             var = dbConnect()
             dbconn = mysql.connect(host=var.host, user=var.user, password=var.password, db=var.db)
             cur = dbconn.cursor()  # Cursor object - required to execute all queries
@@ -75,6 +74,8 @@ class MainMenu(Frame):
                 r.title(':D')
                 r.geometry('250x200')'''
                 #get first name and last name of current player
+                global fn
+                global ln
                 cur.execute("SELECT firstname, lastname FROM playerinfo WHERE username = '%s' AND password = '%s'" % (entry_user.get(), entry_pass.get()))
                 for namerow in cur.fetchall():  # print all the first cell
                     fn = namerow[0] #store firstname
@@ -85,6 +86,8 @@ class MainMenu(Frame):
                 rlb2 = Label(r, text='\nUserName: %s' % entry_user.get())
                 rlb2.pack()
                 r.mainloop()'''
+                self.destroy()
+                parent.destroy()
                 go_to_HomePage()
             else:
                 r = Tk()
