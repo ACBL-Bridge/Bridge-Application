@@ -1,4 +1,4 @@
-from SimpleDeck import *
+from simple_deck import *
 
 class CardSort:
     #Sorting List of Card Objects

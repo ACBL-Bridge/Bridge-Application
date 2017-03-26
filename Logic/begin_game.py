@@ -1,15 +1,15 @@
-from SimpleDeck import *
-from Players import *
-from CardSorter import *
-from TrickSystem import *
-from ScoreSystem import *
-from BidSystem import *
+#from simple_deck import *
+from players import *
+from card_sort import *
+from trick_handle import *
+from score_game import *
+from auction import *
 
 # enables prints at certain debug levels 0=off 1=on
 verbose = 1
 
 # The object that will commence the game
-class GameStart:
+class RoundStart:
     def __init__(self):
         # Create the Deck of Cards
         self.gamedeck = BDeck()
@@ -41,7 +41,8 @@ class GameStart:
 
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
-bgame = GameStart()
+# Both teams are vulnerable..
+bgame = RoundStart()
 
 
 

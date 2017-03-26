@@ -1,9 +1,9 @@
 #Testing Curl and other python properties
 import pycurl
-from ScoreSystem import *
-from Players import *
-from SimpleDeck import *
-from CardSorter import *
+from score_game import *
+from players import *
+from simple_deck import *
+from card_sort import *
 from io import BytesIO
 
 verbose = 0
