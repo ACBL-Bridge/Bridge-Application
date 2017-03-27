@@ -108,4 +108,3 @@ class Trick:
         if verbose:
             print("Current History: " + h)
 
-        
