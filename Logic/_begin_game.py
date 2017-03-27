@@ -24,11 +24,20 @@ class RoundStart:
         # The history of the game
         self.history = ''
 
+        # The declarer
+        self.declarer = ''
+
         # The Auction Session
         self.asession = ''
 
         # Boolean variable to check if auction is complete
         self.auctioncomplete = 0
+
+        # The Trick Session
+        self.tsession = ''
+
+        # Boolean variable to check if tricks are complete
+        self.trickscomplete = 0
 
         # Create Players
         self.playerlst = []
@@ -56,6 +65,15 @@ class RoundStart:
         self.asession = AuctionSession.bidding(bid, self.playerlst, self.history, self.dealer, self.vul)
 
         return self.asession
+
+    def enter_card(self, card):
+
+        if debug:
+            print("Enter Card: ", end='')
+            card =  input()
+
+        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul, self.declarer)
+
 
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.

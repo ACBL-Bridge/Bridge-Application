@@ -76,3 +76,36 @@ class Trick:
         dout = dout.rstrip()
 
         return dout
+
+    @staticmethod
+    def tricksession(card, playerlst, history, dealer, vul, declarer):
+        pov = ['S', 'W', 'N', 'E']
+        h = history
+        d = dealer
+        v = vul
+        s = playerlst[0].ohand()
+        w = playerlst[1].ohand()
+        n = playerlst[2].ohand()
+        e = playerlst[3].ohand()
+        o = 'state1'
+        src = 'eric'
+
+        aimoveset = []
+        sessioncomplete = 0
+
+        output = ""
+        cp = 0
+
+        err = 0
+
+        playercard = card
+
+        if h != '':
+            playercard = '-' + playercard
+
+        h += playercard
+
+        if verbose:
+            print("Current History: " + h)
+
+        
