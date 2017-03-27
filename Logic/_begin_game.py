@@ -36,7 +36,7 @@ class RoundStart:
             self.playerlst.append(Player())
             self.playerlst[i].designation = i
 
-            #Sorts Hand for the players
+            # Sorts Hand for the players
             self.playerlst[i].collecthand(CardSort.csort(self.gamedeck.givehand()))
 
         if verbose:
@@ -44,17 +44,9 @@ class RoundStart:
             print(self.playerlst[0].checkhand() + "\n")
 
 
-        # Temporary EXAMPLE Auction Session and Trick Handling
-        if debug:
-            while self.auctioncomplete == 0:
-                aresult = self.enter_bid(0)
-                self.history = aresult[1]
-
-                print("AI MOVES: " + str(aresult[2]))
-                if aresult[0] == 1:
-                    self.auctioncomplete = 1
 
 
+    # The method that enters the bids to the
     def enter_bid(self, bid):
 
         if debug:
@@ -65,18 +57,22 @@ class RoundStart:
 
         return self.asession
 
-        # A trick handled here
-        # 1st argument is trump value, 5= NO TRUMP
-        #simpletrick = Trick(5, self.playerlst)
-        #simpletrick.starttrick()
-
-
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 # Both teams are vulnerable. Doubles and redoubles do not affect the game.
 bgame = RoundStart()
 
+# Temporary EXAMPLE Auction Session and Trick Handling, The prints should be ignored becuase they are used for debug purposes.
+# The method enter_bid,accepts one integer parameter and returns a list.
+# The list at index [1] contains the history of the auction
+# The list at index [2] contains the next set of moves for the AI.
+while bgame.auctioncomplete == 0:
+    aresult = bgame.enter_bid(0)
+    bgame.history = aresult[1]
 
+    print("AI MOVES: " + str(aresult[2]))
+    if aresult[0] == 1:
+        bgame.auctioncomplete = 1
 
 
 
