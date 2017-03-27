@@ -15,11 +15,11 @@ class RoundStart:
         # Shuffles Deck
         self.gamedeck.shuffle()
 
-        # Current Dealer 0-South 1-West 2-North 3-East
-        self.dealer = 0
+        # Current Dealer 's'-South 'w'-West 'n'-North 'e'-East
+        self.dealer = 's'
 
-        # Current Vulnerability 0-None 1-Both 2-NorthSouth 3-EastWest
-        self.vul = 1
+        # Current Vulnerability '-'-None 'B'-Both 'N'-NorthSouth 'E'-EastWest
+        self.vul = 'B'
 
         # Create Players
         self.playerlst = []
@@ -35,7 +35,7 @@ class RoundStart:
             print(self.playerlst[0].checkhand() + "\n")
 
         # Auction Session
-        osession = Bid.bid_session(self.playerlst)
+        osession = AuctionSession.bidding(self.playerlst, self.dealer, self.vul)
 
 
 

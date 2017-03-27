@@ -15,8 +15,8 @@ for i in range(4):
     playerlst.append(Player())
     playerlst[i].designation = i
     playerlst[i].collecthand(CardSort.csort(gamedeck.givehand()))
-    if verbose:
-        print(playerlst[0].checkhand() + "\n")
+if verbose:
+    print(playerlst[0].checkhand() + "\n")
 
 
 playerlst[0].hand[0] = Card(14,2)
@@ -58,18 +58,18 @@ src = 'eric'
 
 print(s)
 
-#buffer = BytesIO()
-#c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=S&h=&d=s&v=B&n=kt982.q3.k62.t86&s=aq73.94.ajt983.a&e=j5.jt872.754.972&w=64.ak65.q.kqj543&o=state1&src=eric')
-#c.setopt(c.WRITEDATA, buffer)
-#c.perform()
-#c.close()
+buffer = BytesIO()
+c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=S&h=&d=s&v=B&n=kt982.q3.k62.t86&s=aq73.94.ajt983.a&e=j5.jt872.754.972&w=64.ak65.q.kqj543&o=state1&src=eric')
+c.setopt(c.WRITEDATA, buffer)
+c.perform()
+c.close()
 
-#buffer = str(buffer.getvalue())
+buffer = str(buffer.getvalue())
 
-#mylst = buffer.split()
-#print(mylst)
+mylst = buffer.split()
+print(mylst)
 
 # Test Scoring
-if verbose:
-    print("\nIf contract level was 3, contract suit was no trump. and 10 tricks were won:")
-    print(str(Score.scoregame(3,4,10)) + " points")
+#if verbose:
+#    print("\nIf contract level was 3, contract suit was no trump. and 10 tricks were won:")
+#    print(str(Score.scoregame(3,4,10)) + " points")

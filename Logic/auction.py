@@ -4,25 +4,13 @@ from io import BytesIO
 from verbose import *
 
 
-class Bid:
+class AuctionSession:
     def __init__(self):
-        bidTypes = []
-        for i in range(35):
-            bidTypes.append(i)
-
-    @staticmethod
-    def represent_bid(bid):
-        type = ["C","D","H","S","NT"]
-        bidlst = []
-        for i in range(7):
-            for j in type:
-                bidlst.append(str(i) + "-" + j)
-        return bidlst[bid]
-
+        pass
 
     # This function returns a list containing the history of a bidding session, the declarer, and winning bid.
     @staticmethod
-    def bid_session(playerlst):
+    def bidding(playerlst, dealer, vul):
         pov = ['S','W','N','E']
         h = ''
         d = 's'
@@ -33,12 +21,13 @@ class Bid:
         e = playerlst[3].ohand()
         o = 'state1'
         src = 'eric'
-
+        aimoveset = ''
 
         output = ""
         cp = 0
         while True:
             playerbid = 0
+            err = 0
 
             if verbose:
                 print("Place Bid: ", end='')
@@ -48,6 +37,10 @@ class Bid:
                 playerbid = '-' + playerbid
 
             h += playerbid
+
+            if verbose:
+                print("Current History: " + h)
+
 
             if(h[-5:] == 'p-p-p'):
                 break
@@ -68,6 +61,8 @@ class Bid:
                     h += "-" + cbid
                 else:
                     print("ERROR PARSING XML")
+                    print(output)
+                    err = 1
                     break
 
                 if verbose:
@@ -79,7 +74,7 @@ class Bid:
                 cp += 1
                 c.close()
 
-            if (h[-5:] == 'p-p-p'):
+            if (h[-5:] == 'p-p-p' or err == 1):
                 break
 
 
@@ -94,20 +89,15 @@ class Bid:
                 dec = i % 4
 
         if verbose:
-            if dec >= 0:
+            if dec >= 0 and err == 0:
                 print(pov[dec] + " ends bidding with: " + highval)
             #3 Passes in the beginning
             else:
                 print('NO GAME')
 
         olst = ['NO GAME']
-        if dec >= 0:
+        if dec >= 0 and err == 0:
             olst = [h, pov[dec], highval]
 
 
         return olst
-
-
-    @staticmethod
-    def validate_bid():
-        pass
