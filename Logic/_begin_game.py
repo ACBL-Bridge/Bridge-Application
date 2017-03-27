@@ -21,6 +21,15 @@ class RoundStart:
         # Current Vulnerability '-'-None 'B'-Both 'N'-NorthSouth 'E'-EastWest
         self.vul = 'B'
 
+        # The history of the game
+        self.history = ''
+
+        # The Auction Session
+        self.asession = ''
+
+        # Boolean variable to check if auction is complete
+        self.auctioncomplete = 0
+
         # Create Players
         self.playerlst = []
         for i in range(4):
@@ -34,10 +43,27 @@ class RoundStart:
             print("South Cards")
             print(self.playerlst[0].checkhand() + "\n")
 
-        # Auction Session
-        osession = AuctionSession.bidding(self.playerlst, self.dealer, self.vul)
+
+        # Temporary EXAMPLE Auction Session and Trick Handling
+        if debug:
+            while self.auctioncomplete == 0:
+                aresult = self.enter_bid(0)
+                self.history = aresult[1]
+
+                print("AI MOVES: " + str(aresult[2]))
+                if aresult[0] == 1:
+                    self.auctioncomplete = 1
 
 
+    def enter_bid(self, bid):
+
+        if debug:
+            print("Place Bid: ", end='')
+            bid = input()
+
+        self.asession = AuctionSession.bidding(bid, self.playerlst, self.history, self.dealer, self.vul)
+
+        return self.asession
 
         # A trick handled here
         # 1st argument is trump value, 5= NO TRUMP
@@ -47,7 +73,7 @@ class RoundStart:
 
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
-# Both teams are vulnerable..
+# Both teams are vulnerable. Doubles and redoubles do not affect the game.
 bgame = RoundStart()
 
 
