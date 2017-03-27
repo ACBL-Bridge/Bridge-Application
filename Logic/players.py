@@ -1,3 +1,5 @@
+from verbose import *
+
 # The player object that will contain the necessary information
 class Player:
     def __init__(self):

@@ -5,8 +5,7 @@ from players import *
 from simple_deck import *
 from card_sort import *
 from io import BytesIO
-
-verbose = 0
+from verbose import *
 
 gamedeck = BDeck()
 gamedeck.shuffle()

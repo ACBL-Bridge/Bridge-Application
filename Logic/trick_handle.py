@@ -1,6 +1,4 @@
-# Variables for debugging
-debug = 0
-verbose = 1
+from verbose import *
 
 class Trick:
     def __init__(self, trump, playerlst):

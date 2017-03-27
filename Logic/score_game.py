@@ -1,4 +1,4 @@
-verbose = 1
+from verbose import *
 
 class Score:
 

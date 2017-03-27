@@ -1,5 +1,7 @@
 # Creation of a simple deck class that will contain the 52 cards for the contract bridge game.
 # Oscar Rodriguez
+
+from verbose import *
 from random import shuffle
 class Card:
     def __init__(self, i, j):

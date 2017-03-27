@@ -1,5 +1,5 @@
 from simple_deck import *
-
+from verbose import *
 class CardSort:
     #Sorting List of Card Objects
     @staticmethod

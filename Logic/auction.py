@@ -1,8 +1,9 @@
 # Controls the bidding System in which a player can pass or bet
 import pycurl
 from io import BytesIO
+from verbose import *
 
-verbose = 1
+
 class Bid:
     def __init__(self):
         bidTypes = []
