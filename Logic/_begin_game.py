@@ -78,12 +78,14 @@ class RoundStart:
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 # Both teams are vulnerable. Doubles and redoubles do not affect the game.
-bgame = RoundStart()
 
 # Temporary EXAMPLE Auction Session and Trick Handling, The prints should be ignored becuase they are used for debug purposes.
 # The method enter_bid,accepts one integer parameter and returns a list.
 # The list at index [1] contains the history of the auction
 # The list at index [2] contains the next set of moves for the AI.
+
+bgame = RoundStart()
+
 while bgame.auctioncomplete == 0:
     aresult = bgame.enter_bid(0)
     bgame.history = aresult[1]
