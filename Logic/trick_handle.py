@@ -80,7 +80,7 @@ class Trick:
         return dout
 
     @staticmethod
-    def tricksession(card, playerlst, history, dealer, vul, declarer):
+    def tricksession(card, playerlst, history, dealer, vul, currentplayer, currentturn):
         pov = ['S', 'W', 'N', 'E']
         h = history
         d = dealer
@@ -92,28 +92,28 @@ class Trick:
         o = 'state1'
         src = 'eric'
 
-        dec = declarer
         aimoveset = []
         sessioncomplete = 0
 
         output = ""
-        cp = 0
+        cp = pov.index(currentplayer) - 1
 
         err = 0
 
         playercard = card
 
         if h != '':
-            playercard = '-' + playercard
+            playercard = '-' + str(playercard)
 
-        h += playercard
+        if card != 0:
+            h += str(playercard)
 
         if verbose:
             print("Current History: " + h)
 
         if sessioncomplete == 0:
             for i in range(3):
-                cbid = '';
+                cplay = ''
                 buffer = BytesIO()
                 c = pycurl.Curl()
                 c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
@@ -121,12 +121,15 @@ class Trick:
                 c.perform()
                 output = str(buffer.getvalue()).split()
 
+                if verbose:
+                    print("Cold Output: " + str(output))
+
                 # Getting the specific value in the xml document
                 if (len(output) >= 17):
-                    cbid = output[18][4:].strip('"')
-                    cbid = cbid.lower()
-                    h += "-" + cbid
-                    aimoveset.append(cbid)
+                    cplay = output[18][5:8].strip('"')
+                    cplay = cplay.upper()
+                    h += "-" + cplay
+                    aimoveset.append(cplay)
                 else:
                     if verbose:
                         print("ERROR PARSING XML")
@@ -135,15 +138,15 @@ class Trick:
                     break
 
                 if verbose:
-                    print(pov[(cp % 3) + 1] + " bids = " + cbid)
+                    print(pov[(cp % 3) + 1] + " plays = " + cplay)
 
-                if (h[-5:] == 'p-p-p'):
+                if (currentturn == 13):
                     break
 
                 cp += 1
                 c.close()
 
-        if (h[-5:] == 'p-p-p' or err == 1):
+        if currentturn[0] == 13:
             sessioncomplete = 1
 
         # Analyze history
@@ -166,6 +169,7 @@ class Trick:
                 print('NO GAME')
 
         olst = [0, h, aimoveset]
+
         if dec >= 0 and err == 0 and sessioncomplete == 1:
             olst = [1, h, aimoveset, pov[dec], highval]
 

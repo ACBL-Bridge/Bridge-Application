@@ -41,7 +41,7 @@ class AuctionSession:
 
         if sessioncomplete == 0:
             for i in range(3):
-                cbid = '';
+                cbid = ''
                 buffer = BytesIO()
                 c = pycurl.Curl()
                 c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)

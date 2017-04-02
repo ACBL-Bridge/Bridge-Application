@@ -41,6 +41,8 @@ class RoundStart:
 
         self.pov = ['S', 'W', 'N', 'E']
 
+        self.turnnumber = [0,0]
+
         # Create Players
         self.playerlst = []
         for i in range(4):
@@ -69,11 +71,13 @@ class RoundStart:
 
     def enter_card(self, card):
 
-        if debug:
+        if debug and card != 0:
             print("Enter Card: ", end='')
             card =  input()
 
-        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul, self.curplayer)
+        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul, self.curplayer, self.turnnumber)
+        bgame.curplayer = 'S'
+        return self.tsession
 
     def enter_bidding_loop(self, bid):
          aresult = self.enter_bid(bid)
@@ -111,9 +115,16 @@ if debug:
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
             print("Current Player: " + str(bgame.curplayer))
 
-"""
+
     while bgame.trickscomplete == 0:
-        tresult = bgame.enter_card(0)
+        tresult = []
+        userInput = -1
+
+        if bgame.curplayer != 'S':
+            tresult = bgame.enter_card(0)
+        else:
+            tresult = bgame.enter_card(userInput)
+
         bgame.history = aresult[1]
 
         if verbose:
@@ -121,4 +132,3 @@ if debug:
 
         if tresult[0] == 1:
             bgame.trickscomplete = 1
-"""
