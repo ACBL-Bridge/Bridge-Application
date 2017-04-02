@@ -85,7 +85,8 @@ bgame = RoundStart()
 # The list at index [1] contains the history of the auction
 # The list at index [2] contains the next set of moves for the AI.
 while bgame.auctioncomplete == 0:
-    aresult = bgame.enter_bid(0)
+    var = '1s'
+    aresult = bgame.enter_bid(var)
     bgame.history = aresult[1]
 
     print("AI MOVES: " + str(aresult[2]))
