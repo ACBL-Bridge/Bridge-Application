@@ -111,35 +111,62 @@ class Trick:
         if verbose:
             print("Current History: " + h)
 
-        for i in range(3):
-            cbid = '';
-            buffer = BytesIO()
-            c = pycurl.Curl()
-            c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
-            c.setopt(c.WRITEDATA, buffer)
-            c.perform()
-            output = str(buffer.getvalue()).split()
+        if sessioncomplete == 0:
+            for i in range(3):
+                cbid = '';
+                buffer = BytesIO()
+                c = pycurl.Curl()
+                c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
+                c.setopt(c.WRITEDATA, buffer)
+                c.perform()
+                output = str(buffer.getvalue()).split()
 
-            # Getting the specific value in the xml document
-            if (len(output) >= 17):
-                cbid = output[18][4:].strip('"')
-                cbid = cbid.lower()
-                h += "-" + cbid
-                aimoveset.append(cbid)
-            else:
-                print("ERROR PARSING XML")
-                print(output)
-                err = 1
-                break
+                # Getting the specific value in the xml document
+                if (len(output) >= 17):
+                    cbid = output[18][4:].strip('"')
+                    cbid = cbid.lower()
+                    h += "-" + cbid
+                    aimoveset.append(cbid)
+                else:
+                    if verbose:
+                        print("ERROR PARSING XML")
+                        print(output)
+                    err = 1
+                    break
 
-            if verbose:
-                print(pov[(cp % 3) + 1] + " bids = " + cbid)
+                if verbose:
+                    print(pov[(cp % 3) + 1] + " bids = " + cbid)
 
-            if (h[-5:] == 'p-p-p'):
-                break
+                if (h[-5:] == 'p-p-p'):
+                    break
 
-            cp += 1
-            c.close()
+                cp += 1
+                c.close()
 
         if (h[-5:] == 'p-p-p' or err == 1):
             sessioncomplete = 1
+
+        # Analyze history
+
+        hlst = h.split("-")
+        highval = ''
+        dec = -1
+        for i in range(len(hlst)):
+            if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r' and hlst[i] != 'xx'):
+                highval = hlst[i]
+                dec = i % 4
+
+        if verbose:
+            if dec >= 0 and err == 0 and sessioncomplete == 1:
+                print(pov[dec] + " ends bidding with: " + highval)
+            # 3 Passes in the beginning
+            elif sessioncomplete == 0:
+                print('Auction in Session, History: ' + h)
+            else:
+                print('NO GAME')
+
+        olst = [0, h, aimoveset]
+        if dec >= 0 and err == 0 and sessioncomplete == 1:
+            olst = [1, h, aimoveset, pov[dec], highval]
+
+        return olst
