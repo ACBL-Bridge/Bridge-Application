@@ -1,4 +1,6 @@
 from verbose import *
+import pycurl
+from io import BytesIO
 
 class Trick:
     def __init__(self, trump, playerlst):
@@ -83,13 +85,14 @@ class Trick:
         h = history
         d = dealer
         v = vul
-        s = playerlst[0].ohand()
-        w = playerlst[1].ohand()
-        n = playerlst[2].ohand()
-        e = playerlst[3].ohand()
+        s = playerlst[0].permhand
+        w = playerlst[1].permhand
+        n = playerlst[2].permhand
+        e = playerlst[3].permhand
         o = 'state1'
         src = 'eric'
 
+        dec = declarer
         aimoveset = []
         sessioncomplete = 0
 
@@ -108,3 +111,35 @@ class Trick:
         if verbose:
             print("Current History: " + h)
 
+        for i in range(3):
+            cbid = '';
+            buffer = BytesIO()
+            c = pycurl.Curl()
+            c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
+            c.setopt(c.WRITEDATA, buffer)
+            c.perform()
+            output = str(buffer.getvalue()).split()
+
+            # Getting the specific value in the xml document
+            if (len(output) >= 17):
+                cbid = output[18][4:].strip('"')
+                cbid = cbid.lower()
+                h += "-" + cbid
+                aimoveset.append(cbid)
+            else:
+                print("ERROR PARSING XML")
+                print(output)
+                err = 1
+                break
+
+            if verbose:
+                print(pov[(cp % 3) + 1] + " bids = " + cbid)
+
+            if (h[-5:] == 'p-p-p'):
+                break
+
+            cp += 1
+            c.close()
+
+        if (h[-5:] == 'p-p-p' or err == 1):
+            sessioncomplete = 1

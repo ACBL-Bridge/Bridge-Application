@@ -12,10 +12,10 @@ class AuctionSession:
         h = history
         d = dealer
         v = vul
-        s = playerlst[0].ohand()
-        w = playerlst[1].ohand()
-        n = playerlst[2].ohand()
-        e = playerlst[3].ohand()
+        s = playerlst[0].permhand
+        w = playerlst[1].permhand
+        n = playerlst[2].permhand
+        e = playerlst[3].permhand
         o = 'state1'
         src = 'eric'
 
@@ -43,8 +43,7 @@ class AuctionSession:
             cbid = '';
             buffer = BytesIO()
             c = pycurl.Curl()
-            c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(
-                                                                                       cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
+            c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
             c.setopt(c.WRITEDATA, buffer)
             c.perform()
             output = str(buffer.getvalue()).split()

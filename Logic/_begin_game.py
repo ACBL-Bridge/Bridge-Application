@@ -47,6 +47,8 @@ class RoundStart:
 
             # Sorts Hand for the players
             self.playerlst[i].collecthand(CardSort.csort(self.gamedeck.givehand()))
+            # Create Hand for API communication
+            self.playerlst[i].permhand = self.playerlst[i].apihand()
 
         if verbose:
             print("South Cards")

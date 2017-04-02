@@ -10,6 +10,7 @@ class Player:
         self.handval = 0
         self.hand = []
         self.tricks = []
+        self.permhand = ""
 
     # Give Player 13 Cards
     # fhand should be a list of 13 card objects fhand=firsthand
@@ -24,7 +25,7 @@ class Player:
         self.hand.remove(self.hand[cardpos])
 
     # Converts the hand to the necessary string for the Bride API
-    def ohand(self):
+    def apihand(self):
         # The string to send to Bridge API
         ostr = ''
         suitflag = 3

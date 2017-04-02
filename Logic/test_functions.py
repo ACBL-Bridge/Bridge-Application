@@ -43,7 +43,7 @@ d = 'e'
 #Vulnerability
 v = 'B'
 #South Hand
-s = playerlst[0].ohand()
+s = playerlst[0].apihand()
 #West Hand
 w = ''
 #North Hand
