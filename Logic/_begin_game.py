@@ -117,6 +117,7 @@ if debug:
             # This statement preps for the next step
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
             bgame.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
+            print("\n")
             print("Current Player: " + str(bgame.curplayer))
 
 

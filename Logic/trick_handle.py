@@ -107,6 +107,7 @@ class Trick:
 
         if card != 0:
             h += str(playercard)
+            cp += 1
 
         if verbose:
             print("Current History: " + h)
@@ -153,9 +154,6 @@ class Trick:
                     break
 
                 cp += 1
-
-                if dummyturn == 1:
-                    cp -= 1
 
                 c.close()
 
