@@ -24,6 +24,9 @@ class RoundStart:
         # The history of the game
         self.history = ''
 
+        # The declarer
+        self.declarer = ''
+
         # The current player
         self.curplayer = ''
 
@@ -75,7 +78,7 @@ class RoundStart:
             print("Enter Card: ", end='')
             card =  input()
 
-        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul, self.curplayer, self.turnnumber)
+        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul,self.declarer, self.curplayer, self.turnnumber)
         bgame.curplayer = 'S'
         return self.tsession
 
@@ -113,6 +116,7 @@ if debug:
 
             # This statement preps for the next step
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
+            bgame.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
             print("Current Player: " + str(bgame.curplayer))
 
 

@@ -80,7 +80,7 @@ class Trick:
         return dout
 
     @staticmethod
-    def tricksession(card, playerlst, history, dealer, vul, currentplayer, currentturn):
+    def tricksession(card, playerlst, history, dealer, vul, declarer, currentplayer, currentturn):
         pov = ['S', 'W', 'N', 'E']
         h = history
         d = dealer
@@ -96,7 +96,7 @@ class Trick:
         sessioncomplete = 0
 
         output = ""
-        cp = pov.index(currentplayer) - 1
+        cp = pov.index(currentplayer)
 
         err = 0
 
@@ -113,10 +113,19 @@ class Trick:
 
         if sessioncomplete == 0:
             for i in range(3):
+                dummyturn = 0
+                # Contigency for dummies
+                if pov[cp % 4] == pov[(pov.index(declarer) + 2) % 4]:
+                    dummyturn = 1
+                    cp += 2
+                    if verbose:
+                        print('---Dummies Turn---')
+
+
                 cplay = ''
                 buffer = BytesIO()
                 c = pycurl.Curl()
-                c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[(cp % 3) + 1] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
+                c.setopt(c.URL, 'http://gibrest.bridgebase.com/u_bm/robot.php?&pov=' + pov[cp % 4] + '&h=' + h + '&d=' + d + '&v=' + v + '&n=' + n + '&s=' + s + '&e=' + e + '&w=' + w + '&o=' + o + '&src=' + src)
                 c.setopt(c.WRITEDATA, buffer)
                 c.perform()
                 output = str(buffer.getvalue()).split()
@@ -127,7 +136,7 @@ class Trick:
                 # Getting the specific value in the xml document
                 if (len(output) >= 17):
                     cplay = output[18][5:8].strip('"')
-                    cplay = cplay.upper()
+                    cplay = cplay.lower()
                     h += "-" + cplay
                     aimoveset.append(cplay)
                 else:
@@ -144,33 +153,19 @@ class Trick:
                     break
 
                 cp += 1
+
+                if dummyturn == 1:
+                    cp -= 1
+
                 c.close()
 
-        if currentturn[0] == 13:
+        if currentturn[0] == 13 and currentturn[1] == 4:
             sessioncomplete = 1
 
-        # Analyze history
 
-        hlst = h.split("-")
-        highval = ''
-        dec = -1
-        for i in range(len(hlst)):
-            if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r' and hlst[i] != 'xx'):
-                highval = hlst[i]
-                dec = i % 4
+        olst = [0, h, aimoveset, currentturn]
 
-        if verbose:
-            if dec >= 0 and err == 0 and sessioncomplete == 1:
-                print(pov[dec] + " ends bidding with: " + highval)
-            # 3 Passes in the beginning
-            elif sessioncomplete == 0:
-                print('Auction in Session, History: ' + h)
-            else:
-                print('NO GAME')
-
-        olst = [0, h, aimoveset]
-
-        if dec >= 0 and err == 0 and sessioncomplete == 1:
-            olst = [1, h, aimoveset, pov[dec], highval]
+        if sessioncomplete == 1:
+            olst = [1, h, aimoveset, currentturn, currentplayer]
 
         return olst

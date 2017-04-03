@@ -96,5 +96,8 @@ class AuctionSession:
         olst = [0, h, aimoveset]
         if dec >= 0 and err == 0 and sessioncomplete == 1:
             olst = [1, h, aimoveset, pov[dec], highval]
+        if err != 0:
+            # Stop if errors occured
+            olst = [1, h, aimoveset, 'S', '0']
 
         return olst
