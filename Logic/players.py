@@ -24,7 +24,7 @@ class Player:
     def throwcard(self, cardpos):
         self.hand.remove(self.hand[cardpos])
 
-    # Converts the hand to the necessary string for the Bride API
+    # Converts the hand to the necessary string for the Bridge API
     def apihand(self):
         # The string to send to Bridge API
         ostr = ''
