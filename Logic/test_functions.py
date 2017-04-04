@@ -7,6 +7,23 @@ from card_sort import *
 from io import BytesIO
 from verbose import *
 
+
+
+examp = ['a','b']
+elst = ['b','u','r',['a','b']]
+if examp in elst:
+    print('FOUND')
+
+
+
+
+
+
+
+
+
+
+"""
 gamedeck = BDeck()
 gamedeck.shuffle()
 
@@ -68,7 +85,7 @@ buffer = str(buffer.getvalue())
 
 mylst = buffer.split()
 print(mylst)
-
+"""
 # Test Scoring
 #if verbose:
 #    print("\nIf contract level was 3, contract suit was no trump. and 10 tricks were won:")

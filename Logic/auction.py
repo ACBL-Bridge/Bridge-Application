@@ -79,10 +79,15 @@ class AuctionSession:
         hlst = h.split("-")
         highval = ''
         dec = -1
+
+        owner = []
         for i in range(len(hlst)):
             if (hlst[i] != 'p' and hlst[i] != 'x' and hlst[i] != 'r' and hlst[i] != 'xx'):
                 highval = hlst[i]
                 dec = i % 4
+
+            if ('c' in hlst[i] or 'd' in hlst[i] or 'h' in hlst[i] or 's' in hlst[i]):
+                owner.append(hlst[i])
 
         if verbose:
             if dec >= 0 and err == 0 and sessioncomplete == 1:
