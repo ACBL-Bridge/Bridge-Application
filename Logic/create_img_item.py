@@ -1,49 +1,56 @@
 import tkinter as tk
 from PIL import ImageTk
 from PIL import Image
+from urllib.request import urlopen
+import io
+import base64
 
 class CardImage:
     def __init__(self):
+
         self.Heart_Suit = list()
         self.Diamond_Suit = list()
         self.Club_Suit = list()
         self.Spade_Suit = list()
+        self.github_path = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Deck/"
 
         # Store created image items into list - Heart
         for a in range(1, 14):
-            self.Heart_Suit.append(tk.PhotoImage(file=("Heart" + str(a + 1) + ".gif")))
+            self.Heart_Suit.append(tk.PhotoImage(data=self.get_raw("Heart" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Diamond
         for a in range(1, 14):
-            self.Diamond_Suit.append(tk.PhotoImage(file=("Diamond" + str(a + 1) + ".gif")))
+            self.Diamond_Suit.append(tk.PhotoImage(data=self.get_raw("Diamond" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Club
         for a in range(1, 14):
-            self.Club_Suit.append(tk.PhotoImage(file=("Club" + str(a + 1) + ".gif")))
+            self.Club_Suit.append(tk.PhotoImage(data=self.get_raw("Club" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Spade
         for a in range(1, 14):
-            self.Spade_Suit.append(tk.PhotoImage(file=("Spades" + str(a + 1) + ".gif")))
+            self.Spade_Suit.append(tk.PhotoImage(data=self.get_raw("Spades" + str(a + 1) + ".gif")))
 
         # Store created image items into variables - Others
-        self.heart = tk.PhotoImage(file='heart.gif')
-        self.spades = tk.PhotoImage(file='spades.gif')
-        self.club = tk.PhotoImage(file='club.gif')
-        self.diamond = tk.PhotoImage(file='diamond.gif')
+        self.heart = tk.PhotoImage(data=self.get_raw('heart.gif'))
 
-        self.heartT = tk.PhotoImage(file='heartT.png')
-        self.spadesT = tk.PhotoImage(file='spadesT.png')
-        self.clubT = tk.PhotoImage(file='clubT.png')
-        self.diamondT = tk.PhotoImage(file='diamondT.png')
-        self.nt = tk.PhotoImage(file='nt.gif')
+        self.spades = tk.PhotoImage(data=self.get_raw('spades.gif'))
+        self.club = tk.PhotoImage(data=self.get_raw('club.gif'))
+        self.diamond = tk.PhotoImage(data=self.get_raw('diamond.gif'))
 
-        image = Image.open('back_card.gif')
-        # back card vertical
-        self.back_card_v = ImageTk.PhotoImage(image)
-        image = image.transpose(Image.ROTATE_90)
-        # back card horizontal
-        self.back_card = ImageTk.PhotoImage(image)
-        self.empty = tk.PhotoImage(file='empty.png')
+        self.heartT = tk.PhotoImage(data=self.get_raw('heartT.png'))
+        self.spadesT = tk.PhotoImage(data=self.get_raw('spadesT.png'))
+        self.clubT = tk.PhotoImage(data=self.get_raw('clubT.png'))
+        self.diamondT = tk.PhotoImage(data=self.get_raw('diamondT.png'))
+        self.nt = tk.PhotoImage(data=self.get_raw('nt.gif'))
+        self.empty = tk.PhotoImage(data=self.get_raw('empty.png'))
+        self.back_card_v = tk.PhotoImage(data=self.get_raw('back_card.gif'))
+        self.back_card = tk.PhotoImage(data=self.get_raw('back_card_H.gif'))
+
+    def get_raw(self, image):
+        URL = self.github_path + image
+        image_byte = urlopen(URL).read()
+        image_b64 = base64.encodebytes(image_byte)
+        return image_b64
 
     def s_suit(self):
         return self.Spade_Suit
