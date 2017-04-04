@@ -49,19 +49,19 @@ class Card_Display:
         # display for north
         for Card in lst[2].hand:
 
-            if (Card.suit == 0):
+            if (Card.suit == 3):
                 self.north_hand[(self.canvas.create_image(259, y1, image=self.getImage(Card.num, Card.suit), tags='pn'))] = [Card.num, Card.suit,
                                                                                                    259, y1]
                 y1 += 30
-            elif (Card.suit == 1):
+            elif (Card.suit == 2):
                 self.north_hand[(self.canvas.create_image(353, y2, image=self.getImage(Card.num, Card.suit), tags='pn'))] = [Card.num, Card.suit,
                                                                                                    353, y2]
                 y2 += 30
-            elif (Card.suit == 2):
+            elif (Card.suit == 0):
                 self.north_hand[(self.canvas.create_image(447, y3, image=self.getImage(Card.num, Card.suit), tags='pn'))] = [Card.num, Card.suit,
                                                                                                    447, y3]
                 y3 += 30
-            elif (Card.suit == 3):
+            elif (Card.suit == 1):
                 self.north_hand[(self.canvas.create_image(541, y4, image=self.getImage(Card.num, Card.suit), tags='pn'))] = [Card.num, Card.suit,
                                                                                                    541, y4]
                 y4 += 30
@@ -70,25 +70,27 @@ class Card_Display:
     def e_display(self, lst):
         self.clear_hands(self.east_hand)
         self.east_hand.clear()
-        x1 = 700 - (24 * self.find_number_of_suit_card(0, lst[3].hand))
-        x2 = 700 - (24 * self.find_number_of_suit_card(1, lst[3].hand))
-        x3 = 700 - (24 * self.find_number_of_suit_card(2, lst[3].hand))
-        x4 = 700 - (24 * self.find_number_of_suit_card(3, lst[3].hand))
-        for Card in lst[3].hand:
+        x1 = 700 - (24 * self.find_number_of_suit_card(3, lst[3].hand))
+        x2 = 700 - (24 * self.find_number_of_suit_card(2, lst[3].hand))
+        x3 = 700 - (24 * self.find_number_of_suit_card(0, lst[3].hand))
+        x4 = 700 - (24 * self.find_number_of_suit_card(1, lst[3].hand))
 
-            if (Card.suit == 0):
+        temphand = self.change_suitp(lst[3].hand)
+        # for Card in lst[3].hand:
+        for Card in temphand:
+            if (Card.suit == 3):
                 self.east_hand[(self.canvas.create_image(x1, 355, image=self.getImage(Card.num, Card.suit), tags='pe'))] = [Card.num, Card.suit,
                                                                                                       x1, 259]
                 x1 += 24
-            elif (Card.suit == 1):
+            elif (Card.suit == 2):
                 self.east_hand[(self.canvas.create_image(x2, 385, image=self.getImage(Card.num, Card.suit), tags='pe'))] = [Card.num, Card.suit,
                                                                                                       x2, 353]
                 x2 += 24
-            elif (Card.suit == 2):
+            elif (Card.suit == 0):
                 self.east_hand[(self.canvas.create_image(x3, 415, image=self.getImage(Card.num, Card.suit), tags='pe'))] = [Card.num, Card.suit,
                                                                                                       x3, 447]
                 x3 += 24
-            elif (Card.suit == 3):
+            elif (Card.suit == 1):
                 self.east_hand[(self.canvas.create_image(x4, 445, image=self.getImage(Card.num, Card.suit), tags='pe'))] = [Card.num, Card.suit,
                                                                                                       x4, 541]
                 x4 += 24
@@ -99,20 +101,21 @@ class Card_Display:
         self.west_hand.clear()
         # Here add it
         x1 = x2 = x3 = x4 = 100
-        for Card in lst[1].hand2:
-            if (Card.suit == 0):
+        temphand = self.change_suitp(lst[1].hand)
+        for Card in temphand:
+            if (Card.suit == 3):
                 self.west_hand[(self.canvas.create_image(x1, 355, image=self.getImage(Card.num, Card.suit), tags='pw'))] = [Card.num, Card.suit,
                                                                                                       x1, 259]
                 x1 += 24
-            elif (Card.suit == 1):
+            elif (Card.suit == 2):
                 self.west_hand[(self.canvas.create_image(x2, 385, image=self.getImage(Card.num, Card.suit), tags='pw'))] = [Card.num, Card.suit,
                                                                                                       x2, 353]
                 x2 += 24
-            elif (Card.suit == 2):
+            elif (Card.suit == 0):
                 self.west_hand[(self.canvas.create_image(x3, 415, image=self.getImage(Card.num, Card.suit), tags='pw'))] = [Card.num, Card.suit,
                                                                                                       x3, 447]
                 x3 += 24
-            elif (Card.suit == 3):
+            elif (Card.suit == 1):
                 self.west_hand[(self.canvas.create_image(x4, 445, image=self.getImage(Card.num, Card.suit), tags='pw'))] = [Card.num, Card.suit,
                                                                                                       x4, 541]
                 x4 += 24
@@ -120,8 +123,9 @@ class Card_Display:
     # function to place cards on canvas before bidding
     def initial_display(self, lst):
         x = 280
+        temphand = self.change_suitp(lst[0].hand)
         # display for south
-        for Card in lst[0].hand:
+        for Card in temphand:
             self.south_hand[(self.canvas.create_image(x, 700, image=self.getImage(Card.num, Card.suit), tags='ps'))] = [Card.num, Card.suit, x, 700]
             x += 20
             # print(str(Card.suit))
@@ -157,3 +161,16 @@ class Card_Display:
 
         print(str(n))
         return n
+
+    def change_suitp(self, lst):
+        lst1 = list()
+
+        for x in lst:
+            if not x.suit == 1:
+                lst1.append(x)
+
+        for a in lst:
+            if a.suit == 1:
+                lst1.append(a)
+
+        return lst1
