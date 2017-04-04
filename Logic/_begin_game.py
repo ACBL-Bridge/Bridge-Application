@@ -92,6 +92,8 @@ class RoundStart:
          if aresult[0] == 1:
             self.auctioncomplete = 1
 
+         return [aresult[0], aresult[2]]
+
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 # Both teams are vulnerable. Doubles and redoubles do not affect the game.
