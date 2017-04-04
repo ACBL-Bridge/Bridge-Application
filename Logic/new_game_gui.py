@@ -33,9 +33,9 @@ class start_gui_game(tk.Frame):
         self.canvas.tag_bind('pw', '<Button-1>', self.onObjectClick3)
         self.canvas.tag_bind('pe', '<Button-1>', self.onObjectClick4)
         # diamond, club - for color s
-        """self.p = Popout(parent, self.img, self.new_bgame)
+        self.p = Popout(parent, self.img, self.new_bgame)
         self.p.place(relx=0.5, rely=0.5, anchor="center")
-        self.p.grab_set()"""
+        self.p.grab_set()
 
     def onObjectClick1(self, event):
         if self.canvas.find_withtag("current"):
