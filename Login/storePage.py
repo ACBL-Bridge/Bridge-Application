@@ -15,13 +15,6 @@ class StoreScreen(Frame):
         parent.overrideredirect(1)
         parent.geometry("%dx%d+0+0" % (w, h))
 
-
-        #topFrame = Frame(parent)
-        #topFrame.pack(side=TOP)
-        #middleFrame = Frame(parent)
-        #middleFrame.pack()
-        #bottomFrame = Frame(parent)
-        #bottomFrame.pack(side=BOTTOM)
         label = Label(parent, text="LET'S PLAY BRIDGE", font=('Coralva', 42)).pack(side="top", fill="both",expand=True)
         quitButton = Button(parent, text="CANCEL", command=parent.destroy, font='Arial 12').pack(side="bottom")
         b = Button(parent, text="HOME", font='Arial 12').pack(side="bottom")  # FIND A IMAGE OF A HOUSE
@@ -32,7 +25,6 @@ class StoreScreen(Frame):
         canvas = Canvas(parent, width= 2000, height= 2000, bd=0, scrollregion=(0,0, 300, 400),xscrollcommand=xscrollbar.set)
         #yscrollcommand=yscrollbar.set)
         canvas.pack()
-
 
         outer_box = canvas.create_rectangle(1300,600,100,100)
         vert_line = canvas.create_line(400,120,400,580)
