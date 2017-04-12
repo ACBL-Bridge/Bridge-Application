@@ -55,7 +55,7 @@ class StoreScreen(Frame):
         u.close()
         im = Image.open(BytesIO(raw_data))
         Spade = ImageTk.PhotoImage(im)
-        char1_button = Button(parent, image=Spade, width = 90, height = 150, command = self.spade, bg='white')
+        char1_button = Button(parent, image=Spade, width = 90, height = 150, command = lambda: self.displayInfo(URL), bg='white')
         char1_button.image = Spade
         char1_button.place(x = 450, y = 230)
 
@@ -65,7 +65,7 @@ class StoreScreen(Frame):
         u2.close()
         im2 = Image.open(BytesIO(raw_data))
         Clover = ImageTk.PhotoImage(im2)
-        char2_button = Button(parent, image=Clover, width=90, height=150, command = self.clover,bg='white')
+        char2_button = Button(parent, image=Clover, width=90, height=150, command = lambda: self.displayInfo(URL2), bg='white')
         char2_button.image = Clover
         char2_button.place(x=560, y=230)
 
@@ -75,7 +75,7 @@ class StoreScreen(Frame):
         u3.close()
         im3 = Image.open(BytesIO(raw_data))
         Heart = ImageTk.PhotoImage(im3)
-        char3_button = Button(parent, image=Heart, width=90, height=150, command = self.heart, bg='white')
+        char3_button = Button(parent, image=Heart, width=90, height=150, command = lambda: self.displayInfo(URL3), bg='white')
         char3_button.image = Heart
         char3_button.place(x=670, y=230)
 
@@ -85,7 +85,7 @@ class StoreScreen(Frame):
         u4.close()
         im4 = Image.open(BytesIO(raw_data))
         Diamond = ImageTk.PhotoImage(im4)
-        char4_button = Button(parent, image=Diamond, width=90, height=150, command = self.diamond, bg='white')
+        char4_button = Button(parent, image=Diamond, width=90, height=150, command = lambda: self.displayInfo(URL4), bg='white')
         char4_button.image = Diamond
         char4_button.place(x=780, y=230)
 
@@ -95,7 +95,7 @@ class StoreScreen(Frame):
         u5.close()
         im5 = Image.open(BytesIO(raw_data))
         Snowflake = ImageTk.PhotoImage(im5)
-        char5_button = Button(parent, image=Snowflake, width=90, height=150, command = self.snowflake, bg='white')
+        char5_button = Button(parent, image=Snowflake, width=90, height=150, command = lambda: self.displayInfo(URL5), bg='white')
         char5_button.image = Snowflake
         char5_button.place(x=890, y=230)
 
@@ -155,38 +155,32 @@ class StoreScreen(Frame):
 
 
     ########FOR CHARACTER BUTTONS########
-    def spade(self):
 
-        spade_name = canvas.create_text(250,400, text="Name: Spade", font=("Arial", 12))
-        spade_cost = canvas.create_text(250,420, text="Cost: 100", font=("Arial", 10))
-        spade_des = canvas.create_text(250,460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10))
 
-    def clover(self):
 
-        clover_name = canvas.create_text(250, 400, text="Name: Clover", font=("Arial", 12))
-        clover_cost = canvas.create_text(250, 420, text="Cost: 1500", font=("Arial", 10))
-        clover_des = canvas.create_text(250, 460, text="Clover is the smartest kid in Bridge town", font=("Arial", 10))
+    ###Display info ###
+    def displayInfo(self, imgName):
 
-    def heart(self):
+        canvas.delete("infoTag")
+        canvas.delete("costTag")
+        canvas.delete("desTag")
 
-        heart_name = canvas.create_text(250, 400, text="Name: Heart", font=("Arial", 12))
-        heart_cost = canvas.create_text(250, 420, text="Cost: 550", font=("Arial", 10))
-        heart_des = canvas.create_text(250, 460, text="Heart knows when to play the right cards", font=("Arial", 10))
+        name = canvas.create_text(250, 400, text="Name: " + imgName, font=("Arial", 12), tag="infoTag")
+        cost = canvas.create_text(250, 420, text="Cost: 100", font=("Arial", 10), tag="costTag")
+        des = canvas.create_text(250, 460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10), tag ="desTag")
 
-    def diamond(self):
 
-        diamond_name = canvas.create_text(250, 400, text="Name: Diamond", font=("Arial", 12))
-        diamond_cost = canvas.create_text(250, 420, text="Cost: 850", font=("Arial", 10))
-        diamond_des = canvas.create_text(250, 460, text="Diamond can double the amount of points", font=("Arial", 10))
+        #name = canvas.create_text(250,400, text="Name: " + imgName, font=("Arial", 12), tag="infoTag")
+        #cost = canvas.create_text(250,420, text="Cost: 100", font=("Arial", 10))
+        #des = canvas.create_text(250,460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10))
 
-    def snowflake(self):
 
-        snow_name = canvas.create_text(250, 400, text="Name: Snowflake", font=("Arial", 12))
-        snow_cost = canvas.create_text(250, 420, text="Cost: 2000", font=("Arial", 10))
-        snow_des = canvas.create_text(250, 460, text="Snowflake can make 90% of the contracts he bids", font=("Arial", 10))
+
+
+
 
     # def delete_text(self):
-    #     if char2_button == <button release>:
+    #     if spade_name != "":
     #         canvas.delete(spade_name)
     #         canvas.delete(spade_cost)
     #         canvas.delete(spade_des)
