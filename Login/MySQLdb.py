@@ -1,4 +1,4 @@
-#Private database connection credentials
+#Private Database Connection Credentials
 
 class dbConnect:
     def __init__(self):
