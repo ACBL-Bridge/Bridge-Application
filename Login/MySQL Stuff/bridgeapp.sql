@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2017 at 07:50 PM
+-- Generation Time: Apr 12, 2017 at 08:47 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -78,6 +78,35 @@ INSERT INTO `playerstats` (`PID`, `ID`, `dealsplayed`, `level`, `exp`, `coins`, 
 (2004, 1004, 600, 350, 365266, 236, 25),
 (2005, 1005, 690, 500, 32689, 500, 30);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `storedata`
+--
+
+CREATE TABLE `storedata` (
+  `sdid` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `costprice` int(11) NOT NULL,
+  `description` varchar(400) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `storedata`
+--
+
+INSERT INTO `storedata` (`sdid`, `name`, `costprice`, `description`) VALUES
+(3000, 'Spade', 100, 'Spade is an awesome dude that plays bridge'),
+(3001, 'Clover', 1500, 'Clover is the smartest kid in Bridge town'),
+(3002, 'Heart', 550, 'Heart knows when to play the right cards'),
+(3003, 'Diamond', 850, 'Diamond can double the amount of points'),
+(3004, 'Snowflake', 2000, 'Snowflake can make 90% of the contracts he bids'),
+(3005, 'Lightgreen', 500, ''),
+(3006, 'Red', 650, ''),
+(3007, 'Black', 1000, ''),
+(3008, 'Blue', 1500, ''),
+(3009, 'Gold', 2000, '');
+
 --
 -- Indexes for dumped tables
 --
@@ -96,6 +125,12 @@ ALTER TABLE `playerstats`
   ADD PRIMARY KEY (`PID`);
 
 --
+-- Indexes for table `storedata`
+--
+ALTER TABLE `storedata`
+  ADD PRIMARY KEY (`sdid`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -109,6 +144,11 @@ ALTER TABLE `playerinfo`
 --
 ALTER TABLE `playerstats`
   MODIFY `PID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2006;
+--
+-- AUTO_INCREMENT for table `storedata`
+--
+ALTER TABLE `storedata`
+  MODIFY `sdid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3010;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
