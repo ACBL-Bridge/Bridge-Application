@@ -2,6 +2,8 @@ from tkinter import *
 from PIL import Image, ImageTk
 from urllib.request import urlopen
 from io import BytesIO
+import mysql.connector as mysql
+from MySQLdb import dbConnect
 
 
 class StoreScreen(Frame):
@@ -109,7 +111,7 @@ class StoreScreen(Frame):
         u6.close()
         im6 = Image.open(BytesIO(raw_data))
         LG = ImageTk.PhotoImage(im6)
-        lg_button = Button(parent, image=LG, width=90, height=150, command=self.lightGreen)
+        lg_button = Button(parent, image=LG, width=90, height=150, command= lambda: self.displayInfo(URL6))
         lg_button.image = LG
         lg_button.place(x=440, y=460)
 
@@ -119,7 +121,7 @@ class StoreScreen(Frame):
         u7.close()
         im7 = Image.open(BytesIO(raw_data))
         RED = ImageTk.PhotoImage(im7)
-        red_button = Button(parent, image=RED, width=90, height=150, command=self.Red)
+        red_button = Button(parent, image=RED, width=90, height=150, command= lambda: self.displayInfo(URL7))
         red_button.image = RED
         red_button.place(x=560, y=460)
 
@@ -129,7 +131,7 @@ class StoreScreen(Frame):
         u8.close()
         im8 = Image.open(BytesIO(raw_data))
         BLACK = ImageTk.PhotoImage(im8)
-        black_button = Button(parent, image=BLACK, width=90, height=150 ,command=self.Black)
+        black_button = Button(parent, image=BLACK, width=90, height=150 , command= lambda: self.displayInfo(URL8))
         black_button.image = BLACK
         black_button.place(x=680, y=460)
 
@@ -139,7 +141,7 @@ class StoreScreen(Frame):
         u9.close()
         im9 = Image.open(BytesIO(raw_data))
         BLUE = ImageTk.PhotoImage(im9)
-        blue_button = Button(parent, image=BLUE, width=90, height=150, command=self.Blue)
+        blue_button = Button(parent, image=BLUE, width=90, height=150, command= lambda: self.displayInfo(URL9))
         blue_button.image = BLUE
         blue_button.place(x=800, y=460)
 
@@ -149,93 +151,49 @@ class StoreScreen(Frame):
         u10.close()
         im10 = Image.open(BytesIO(raw_data))
         GOLD = ImageTk.PhotoImage(im10)
-        gold_button = Button(parent, image=GOLD, width=90, height=150 ,command=self.Gold)
+        gold_button = Button(parent, image=GOLD, width=90, height=150, command= lambda: self.displayInfo(URL10))
         gold_button.image = GOLD
         gold_button.place(x=920, y=460)
-
-
-    ########FOR CHARACTER BUTTONS########
 
 
 
     ###Display info ###
     def displayInfo(self, imgName):
 
+        ##DELETE previous info
         canvas.delete("infoTag")
         canvas.delete("costTag")
         canvas.delete("desTag")
 
-        name = canvas.create_text(250, 400, text="Name: " + imgName, font=("Arial", 12), tag="infoTag")
-        cost = canvas.create_text(250, 420, text="Cost: 100", font=("Arial", 10), tag="costTag")
-        des = canvas.create_text(250, 460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10), tag ="desTag")
+        ##Fix Up Image Name
+        s1 = imgName.split('.')[0] #remove everything starting from .
+        s2 = s1.split('(')[0]  # remove everything starting from (
+        s3 = s2.title()        # make first letter Capitalized and the rest lowercase
+
+        ##DATABASE!!
+        var = dbConnect()
+        dbconn = mysql.connect(host=var.host, user=var.user, password=var.password, db=var.db)
+        cur = dbconn.cursor()  # Cursor object - required to execute all queries
+
+        cur.execute("SELECT name, costprice, description FROM storedata WHERE name = '%s'" % s3)
+
+        for info in cur.fetchall():  # print all the first cell
+            imageName = info[0]  # save - image name
+            costPrice = info[1]  # save - image cost price
+            description = info[2] #save - image description
 
 
-        #name = canvas.create_text(250,400, text="Name: " + imgName, font=("Arial", 12), tag="infoTag")
-        #cost = canvas.create_text(250,420, text="Cost: 100", font=("Arial", 10))
-        #des = canvas.create_text(250,460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10))
+
+        ##Display new info
+        name = canvas.create_text(250, 400, text="Name: %s" % imageName, font=("Arial", 12), tag="infoTag")
+        cost = canvas.create_text(250, 420, text="Cost: %s" % costPrice, font=("Arial", 10), tag="costTag")
+        des = canvas.create_text(250, 460, text="%s" % description, font=("Arial", 10), tag ="desTag")
 
 
 
 
 
 
-    # def delete_text(self):
-    #     if spade_name != "":
-    #         canvas.delete(spade_name)
-    #         canvas.delete(spade_cost)
-    #         canvas.delete(spade_des)
-
-    ########FOR CARD BACK BUTTONS######
-
-    def lightGreen(self):
-        top = Toplevel()
-        top.title("Light Green")
-        width = 350
-        height = 50
-        top.minsize(width, height)
-        top.maxsize(width, height)
-        char = Label(top, text="Light Green", font=("Arial", 12)).pack(side="top", padx=20)
-        cost = Label(top, text="Cost: 500", font=("Arial", 10)).pack(padx=20)
-
-    def Red(self):
-        top = Toplevel()
-        top.title("Red")
-        width = 350
-        height = 50
-        top.minsize(width, height)
-        top.maxsize(width, height)
-        char = Label(top, text="Red", font=("Arial", 12)).pack(side="top", padx=20)
-        cost = Label(top, text="Cost: 650", font=("Arial", 10)).pack(padx=20)
-
-    def Black(self):
-        top = Toplevel()
-        top.title("Black")
-        width = 350
-        height = 50
-        top.minsize(width, height)
-        top.maxsize(width, height)
-        char = Label(top, text="Black", font=("Arial", 12)).pack(side="top", padx=20)
-        cost = Label(top, text="Cost: 1000", font=("Arial", 10)).pack(padx=20)
-
-    def Blue(self):
-        top = Toplevel()
-        top.title("Blue")
-        width = 350
-        height = 50
-        top.minsize(width, height)
-        top.maxsize(width, height)
-        char = Label(top, text="Blue", font=("Arial", 12)).pack(side="top", padx=20)
-        cost = Label(top, text="Cost: 1500", font=("Arial", 10)).pack(padx=20)
-
-    def Gold(self):
-        top = Toplevel()
-        top.title("Gold")
-        width = 350
-        height = 50
-        top.minsize(width, height)
-        top.maxsize(width, height)
-        char = Label(top, text="Gold", font=("Arial", 12)).pack(side="top", padx=20)
-        cost = Label(top, text="Cost: 2000", font=("Arial", 10)).pack(padx=20)
 
 
 
