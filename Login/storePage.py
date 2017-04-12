@@ -156,72 +156,31 @@ class StoreScreen(Frame):
 
     ########FOR CHARACTER BUTTONS########
     def spade(self):
-        # top = Toplevel()
-        # top.title("Spade")
-        # width = 300
-        # height = 100
-        # top.minsize(width, height)
-        # top.maxsize(width, height)
-        # char = Label(top, text="Spade",font=("Arial", 12)).pack(side="top", padx = 20)
-        # cost = Label(top, text="Cost: 100", font=("Arial", 10)).pack(padx=20)
-        # text = Label(top, text="Spade is an awesome dude that plays bridge", font=("Arial", 10)).pack(padx=20)
+
         spade_name = canvas.create_text(250,400, text="Name: Spade", font=("Arial", 12))
         spade_cost = canvas.create_text(250,420, text="Cost: 100", font=("Arial", 10))
         spade_des = canvas.create_text(250,460, text="Spade is an awesome dude that plays bridge", font=("Arial", 10))
 
     def clover(self):
-        # top = Toplevel()
-        # top.title("Clover")
-        # width = 300
-        # height = 100
-        # top.minsize(width, height)
-        # top.maxsize(width, height)
-        # char = Label(top, text="Clover", font=("Arial", 12)).pack(side="top", padx = 20)
-        # cost = Label(top, text="Cost: 1500", font=("Arial", 10)).pack(padx=20)
-        # text = Label(top, text="Clover is the smartest kid in Bridge town", font=("Arial", 10)).pack(padx=20)
 
         clover_name = canvas.create_text(250, 400, text="Name: Clover", font=("Arial", 12))
         clover_cost = canvas.create_text(250, 420, text="Cost: 1500", font=("Arial", 10))
         clover_des = canvas.create_text(250, 460, text="Clover is the smartest kid in Bridge town", font=("Arial", 10))
 
     def heart(self):
-        # top = Toplevel()
-        # top.title("Heart")
-        # width = 300
-        # height = 100
-        # top.minsize(width, height)
-        # top.maxsize(width, height)
-        # char = Label(top, text = "Heart",font=("Arial", 12)).pack(side="top", padx = 20)
-        # cost = Label(top, text="Cost: 550", font=("Arial", 10)).pack(padx=20)
-        # text = Label(top, text="Heart knows when to play the right cards", font=("Arial", 10)).pack(padx=20)
+
         heart_name = canvas.create_text(250, 400, text="Name: Heart", font=("Arial", 12))
         heart_cost = canvas.create_text(250, 420, text="Cost: 550", font=("Arial", 10))
         heart_des = canvas.create_text(250, 460, text="Heart knows when to play the right cards", font=("Arial", 10))
 
     def diamond(self):
-        # top = Toplevel()
-        # top.title("Diamond")
-        # width = 300
-        # height = 100
-        # top.minsize(width, height)
-        # top.maxsize(width, height)
-        # char = Label(top, text="Diamond",font=("Arial", 12)).pack(side="top", padx = 20)
-        # cost = Label(top, text="Cost: 850", font=("Arial", 10)).pack(padx=20)
-        # text = Label(top, text="Diamond can double the amount of points", font=("Arial", 10)).pack(padx=20)
+
         diamond_name = canvas.create_text(250, 400, text="Name: Diamond", font=("Arial", 12))
         diamond_cost = canvas.create_text(250, 420, text="Cost: 850", font=("Arial", 10))
         diamond_des = canvas.create_text(250, 460, text="Diamond can double the amount of points", font=("Arial", 10))
 
     def snowflake(self):
-        # top = Toplevel()
-        # top.title("Snowflake")
-        # width = 350
-        # height = 100
-        # top.minsize(width, height)
-        # top.maxsize(width, height)
-        # char = Label(top, text="Snowflake",font=("Arial", 12)).pack(side="top", padx = 20)
-        # cost = Label(top, text="Cost: 2000", font=("Arial", 10)).pack(padx=20)
-        # text1 = Label(top, text="Snowflake can make 90% of the contracts he bids", font=("Arial", 10)).pack(padx=20)
+
         snow_name = canvas.create_text(250, 400, text="Name: Snowflake", font=("Arial", 12))
         snow_cost = canvas.create_text(250, 420, text="Cost: 2000", font=("Arial", 10))
         snow_des = canvas.create_text(250, 460, text="Snowflake can make 90% of the contracts he bids", font=("Arial", 10))
