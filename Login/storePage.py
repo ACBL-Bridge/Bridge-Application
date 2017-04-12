@@ -165,7 +165,7 @@ class StoreScreen(Frame):
         canvas.delete("costTag")
         canvas.delete("desTag")
 
-        ##Fix Up Image Name
+        ##Fix Up imgName
         s1 = imgName.split('.')[0] #remove everything starting from .
         s2 = s1.split('(')[0]  # remove everything starting from (
         s3 = s2.title()        # make first letter Capitalized and the rest lowercase
@@ -175,6 +175,7 @@ class StoreScreen(Frame):
         dbconn = mysql.connect(host=var.host, user=var.user, password=var.password, db=var.db)
         cur = dbconn.cursor()  # Cursor object - required to execute all queries
 
+        ##DB Query
         cur.execute("SELECT name, costprice, description FROM storedata WHERE name = '%s'" % s3)
 
         for info in cur.fetchall():  # print all the first cell
@@ -182,22 +183,10 @@ class StoreScreen(Frame):
             costPrice = info[1]  # save - image cost price
             description = info[2] #save - image description
 
-
-
         ##Display new info
         name = canvas.create_text(250, 400, text="Name: %s" % imageName, font=("Arial", 12), tag="infoTag")
         cost = canvas.create_text(250, 420, text="Cost: %s" % costPrice, font=("Arial", 10), tag="costTag")
         des = canvas.create_text(250, 460, text="%s" % description, font=("Arial", 10), tag ="desTag")
-
-
-
-
-
-
-
-
-
-
 
 root = Tk()
 StoreScreen(root).pack(fill="both", expand=True)
