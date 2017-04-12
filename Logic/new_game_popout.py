@@ -10,10 +10,8 @@ class Popout(tk.Frame):
         # This holds tha last bid and at the end would be the final contract
         self.lastbid = ''
         self.current_declarer = ''
-        self.openBT = 1
         # This list holds all image items on the bidding table - heart, spade, diamond and NT
         self.button = list()
-
         tk.Frame.__init__(self, parent, background="black", padx=10,
                           pady=10)
         #creating New Popout Window
@@ -175,7 +173,6 @@ class Popout(tk.Frame):
         self.newWindow.forget()
         self.destroy()
         self.newWindow.destroy()
-        self.openBT = 0
         # return [lastbid, current_declerer]
 
 
@@ -184,7 +181,7 @@ class NewPopout(tk.Frame):
     def __init__(self, parent, img):
         self.ImageItems = img
         self.Current_Row = 2
-        self.Current_Column = 2
+        self.Current_Column = 6
         tk.Frame.__init__(self, parent, background="white", padx=10, pady=10)
 
         self.grid_columnconfigure(0, weight=1)
