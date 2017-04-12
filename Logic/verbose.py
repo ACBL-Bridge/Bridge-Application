@@ -2,5 +2,5 @@
 
 global verbose
 global debug
-verbose = 0
-debug = 0
+verbose = 1
+debug = 1

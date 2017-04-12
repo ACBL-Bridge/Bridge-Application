@@ -89,6 +89,11 @@ class AuctionSession:
             if ('c' in hlst[i] or 'd' in hlst[i] or 'h' in hlst[i] or 's' in hlst[i]):
                 owner.append(hlst[i])
 
+        truedec = 0
+        partner = (dec + 2) % 4
+        highsuitsave = []
+        lowsuitsave = []
+
         if verbose:
             if dec >= 0 and err == 0 and sessioncomplete == 1:
                 print(pov[dec] + " ends bidding with: " + highval)
@@ -101,8 +106,31 @@ class AuctionSession:
         olst = [0, h, aimoveset]
         if dec >= 0 and err == 0 and sessioncomplete == 1:
             olst = [1, h, aimoveset, pov[dec], highval]
+            for i in range(len(hlst)):
+                if (i % 4 == partner and highval[1] in hlst[i]):
+                    lowsuitsave.append(hlst[i])
+                if (i % 4 == dec and highval[1] in hlst[i]):
+                    highsuitsave.append(hlst[i])
+
+
+            if(len(highsuitsave) > 0 and len(lowsuitsave) > 0):
+                if lowsuitsave[0][0] < highsuitsave[0][0]:
+                    truedec = partner
+                    olst = [1, h, aimoveset, pov[partner], highval]
+
+                else:
+                    truedec = dec
+            else:
+                truedec = dec
+
+            if verbose:
+                print("Declarer: " + pov[truedec])
+                print("HIGHSUIT CHECK: " + str(highsuitsave) + ' HIGH = ' + highsuitsave[0][0])
+                print("LOWSUIT CHECK: " + str(lowsuitsave) + ' LOW = ' + lowsuitsave[0][0])
+
         if err != 0:
             # Stop if errors occured
             olst = [1, h, aimoveset, 'S', '0']
+
 
         return olst

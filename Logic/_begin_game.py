@@ -122,7 +122,7 @@ if debug:
             print("\n")
             print("Current Player: " + str(bgame.curplayer))
 
-
+"""
     while bgame.trickscomplete == 0:
         tresult = []
         userInput = -1
@@ -139,3 +139,4 @@ if debug:
 
         if tresult[0] == 1:
             bgame.trickscomplete = 1
+"""
