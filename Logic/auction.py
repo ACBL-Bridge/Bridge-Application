@@ -125,8 +125,8 @@ class AuctionSession:
 
             if verbose:
                 print("Declarer: " + pov[truedec])
-                print("HIGHSUIT CHECK: " + str(highsuitsave) + ' HIGH = ' + highsuitsave[0][0])
-                print("LOWSUIT CHECK: " + str(lowsuitsave) + ' LOW = ' + lowsuitsave[0][0])
+                #print("HIGHSUIT CHECK: " + str(highsuitsave) + ' HIGH = ' + highsuitsave[0][0])
+                #print("LOWSUIT CHECK: " + str(lowsuitsave) + ' LOW = ' + lowsuitsave[0][0])
 
         if err != 0:
             # Stop if errors occured

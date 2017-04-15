@@ -79,7 +79,7 @@ class RoundStart:
             card =  input()
 
         self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul,self.declarer, self.curplayer, self.turnnumber)
-        bgame.curplayer = 'S'
+        bgame.curplayer = self.tsession[4]
         return self.tsession
 
     def enter_bidding_loop(self, bid):
@@ -107,7 +107,8 @@ class RoundStart:
 if debug:
     bgame = RoundStart()
     while bgame.auctioncomplete == 0:
-        aresult = bgame.enter_bid(0)
+        userInput = -1
+        aresult = bgame.enter_bid(userInput)
         bgame.history = aresult[1]
 
         if verbose:
@@ -119,24 +120,24 @@ if debug:
             # This statement preps for the next step
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
             bgame.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
-            print("\n")
-            print("Current Player: " + str(bgame.curplayer))
 
-"""
+            if verbose:
+                print("\n")
+                print("Current Player: " + str(bgame.curplayer))
+
     while bgame.trickscomplete == 0:
-        tresult = []
         userInput = -1
+        tresult = []
 
         if bgame.curplayer != 'S':
             tresult = bgame.enter_card(0)
         else:
             tresult = bgame.enter_card(userInput)
 
-        bgame.history = aresult[1]
+        bgame.history = tresult[1]
 
         if verbose:
-            print("AI MOVES: " + str(aresult[2]))
+            print("AI MOVES: " + str(tresult[2]))
 
         if tresult[0] == 1:
             bgame.trickscomplete = 1
-"""

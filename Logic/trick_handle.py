@@ -80,6 +80,17 @@ class Trick:
         return dout
 
     @staticmethod
+    def increaseturn(turn):
+        ct = turn[0]
+        part = turn[1]
+
+        if part == 4:
+            part = 0
+            ct += 1
+
+        return [ct, part]
+
+    @staticmethod
     def tricksession(card, playerlst, history, dealer, vul, declarer, currentplayer, currentturn):
         pov = ['S', 'W', 'N', 'E']
         h = history
@@ -94,6 +105,7 @@ class Trick:
 
         aimoveset = []
         sessioncomplete = 0
+        dummy = pov[(pov.index(declarer) + 2) % 4]
 
         output = ""
         cp = pov.index(currentplayer)
@@ -102,26 +114,32 @@ class Trick:
 
         playercard = card
 
-        if h != '':
-            playercard = '-' + str(playercard)
-
-        if card != 0:
-            h += str(playercard)
+        if card != 0 and currentplayer == 'S' or (currentplayer == 'N' and declarer ==  'S'):
+            h += '-' + str(playercard)
             cp += 1
+
+            if not currentturn:
+                currentturn = [0, 0]
+            currentturn = Trick.increaseturn(currentturn)
 
         if verbose:
             print("Current History: " + h)
+
+        if currentturn[0] == 13:
+            sessioncomplete = 1
 
         if sessioncomplete == 0:
             for i in range(3):
                 dummyturn = 0
                 # Contigency for dummies
-                if pov[cp % 4] == pov[(pov.index(declarer) + 2) % 4]:
+                if pov[cp % 4] == dummy:
                     dummyturn = 1
                     cp += 2
                     if verbose:
-                        print('---Dummies Turn---')
-
+                        print('---Dummy Turn of ' + dummy + '---')
+                    if pov[cp % 4] == 'S' or pov[cp % 4] == 'N':
+                        currentplayer = pov[(pov.index(declarer) + 2) % 4]
+                        break
 
                 cplay = ''
                 buffer = BytesIO()
@@ -130,6 +148,10 @@ class Trick:
                 c.setopt(c.WRITEDATA, buffer)
                 c.perform()
                 output = str(buffer.getvalue()).split()
+
+                if not currentturn:
+                    currentturn = [0, 0]
+                currentturn = Trick.increaseturn(currentturn)
 
                 if verbose:
                     print("Cold Output: " + str(output))
@@ -148,22 +170,29 @@ class Trick:
                     break
 
                 if verbose:
-                    print(pov[(cp % 3) + 1] + " plays = " + cplay)
+                    print(pov[(cp % 4)] + " plays = " + cplay)
 
-                if (currentturn == 13):
+                if (currentturn[0] == 13):
+                    sessioncomplete = 1
                     break
 
                 cp += 1
 
+                if dummyturn:
+                    cp -= 2
+
                 c.close()
 
-        if currentturn[0] == 13 and currentturn[1] == 4:
+        if currentturn[0] == 13:
             sessioncomplete = 1
 
 
-        olst = [0, h, aimoveset, currentturn]
+        olst = [0, h, aimoveset, currentturn, currentplayer]
 
         if sessioncomplete == 1:
             olst = [1, h, aimoveset, currentturn, currentplayer]
 
+        print("Raw List: " + str(olst))
         return olst
+
+
