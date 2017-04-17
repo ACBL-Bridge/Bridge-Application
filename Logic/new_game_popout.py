@@ -3,10 +3,11 @@ from game_display import *
 
 # class for bidding table
 class Popout(tk.Frame):
-    def __init__(self, parent, img, bgame):
+    def __init__(self, parent, img, bgame, cw):
 
         self.ImageItems = img
         self.new_bgame  = bgame
+        self.contract_Window = cw
         # This holds tha last bid and at the end would be the final contract
         self.lastbid = ''
         self.current_declarer = ''
@@ -16,10 +17,10 @@ class Popout(tk.Frame):
                           pady=10)
         #creating New Popout Window
         self.newWindow = NewPopout(parent, self.ImageItems)
-        self.newWindow.place(relx=0.66, rely=0.1, anchor="nw")
+        self.newWindow.place(relx=0.98, rely=0.03, anchor="ne")
 
-        self.contract_Window = Popout_contract(parent, self.ImageItems)
-        self.contract_Window.place(relx=0.9, rely=0.9, anchor="nw")
+        # self.contract_Window = Popout_contract(parent, self.ImageItems)
+        # self.contract_Window.place(relx=0.98, rely=0.97, anchor="se")
 
         self.title = tk.Label(self, text="Bidding Table", font=("Helvetica", 16),
                               background="black", foreground="white")
@@ -38,15 +39,15 @@ class Popout(tk.Frame):
             tk.Label(self, text=str(a + 1), font=("Helvetica", 12),
                      background="black", foreground="white").grid(row=(a + 1), column=0)
 
-            self.button.append(tk.Button(self, image=self.ImageItems.club, command=partial(self.bid_clic, a + 1, "c")))
+            self.button.append(tk.Button(self, image=self.ImageItems.club, bd=0, bg="black", command=partial(self.bid_clic, a + 1, "c")))
             self.button[-1].grid(row=(a + 1), column=(1))
-            self.button.append(tk.Button(self, image=self.ImageItems.diamond, command=partial(self.bid_clic, a + 1, "d")))
+            self.button.append(tk.Button(self, image=self.ImageItems.diamond, bd=0, bg="black", command=partial(self.bid_clic, a + 1, "d")))
             self.button[-1].grid(row=(a + 1), column=(2))
-            self.button.append(tk.Button(self, image=self.ImageItems.heart, command=partial(self.bid_clic, a + 1, "h")))
+            self.button.append(tk.Button(self, image=self.ImageItems.heart, bd=0, bg="black", command=partial(self.bid_clic, a + 1, "h")))
             self.button[-1].grid(row=(a + 1), column=(3))
-            self.button.append(tk.Button(self, image=self.ImageItems.spades, command=partial(self.bid_clic, a + 1, "s")))
+            self.button.append(tk.Button(self, image=self.ImageItems.spades, bd=0, bg="black", command=partial(self.bid_clic, a + 1, "s")))
             self.button[-1].grid(row=(a + 1), column=(4))
-            self.button.append(tk.Button(self, image=self.ImageItems.nt, command=partial(self.bid_clic, a + 1, "n")))
+            self.button.append(tk.Button(self, image=self.ImageItems.nt, bd=0, bg="black", command=partial(self.bid_clic, a + 1, "n")))
             self.button[-1].grid(row=(a + 1), column=(5))
 
         self.pass_btn.grid(row=8, column=0, columnspan=3)
@@ -94,6 +95,7 @@ class Popout(tk.Frame):
             else:
                 if eachplayer == 'p':
                     self.newWindow.add_bid_different(eachplayer)
+                    temp_idx += 1
                 elif eachplayer == 'x':
                     self.newWindow.add_bid_different(eachplayer)
                     self.contract_Window.update_contract_dbl('X')
@@ -155,10 +157,13 @@ class Popout(tk.Frame):
 
     def check_currentplayer(self, index):
         if index == 0:
+            print('w')
             return 'w'
         elif index == 1:
+            print('n')
             return 'n'
         else:
+            print('e')
             return 'e'
 
     def continue_btn_event(self):
@@ -201,25 +206,25 @@ class NewPopout(tk.Frame):
 
     def Add_bid(self, num, suit):
         tk.Label(self, text=num, font=("Helvetica", 14, "bold"),
-                 background="white", foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                 background="white", foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="e")
 
         self.Current_Column += 1
 
         if (suit == 'c'):
             tk.Label(self, image=self.ImageItems.clubT, background="white",
-                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="w")
         elif (suit == 'h'):
             tk.Label(self, image=self.ImageItems.heartT, background="white",
-                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="w")
         elif (suit == 's'):
             tk.Label(self, image=self.ImageItems.spadesT, background="white",
-                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="w")
         elif (suit == 'd'):
             tk.Label(self, image=self.ImageItems.diamondT, background="white",
-                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="w")
         elif (suit == 'n'):
             tk.Label(self, text='NT', font=("Helvetica", 14, "bold"), background="white",
-                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column)
+                     foreground="black").grid(row=self.Current_Row, column=self.Current_Column, sticky="w")
 
         self.Current_Column += 1
         self.New_Row(self.Current_Column)
@@ -245,42 +250,3 @@ class NewPopout(tk.Frame):
         if (cColumn == 8):
             self.Current_Row += 1
             self.Current_Column = 0
-
-
-# class to display current contract
-class Popout_contract(tk.Frame):
-    def __init__(self, parent, img):
-        self.ImageItems = img
-        tk.Frame.__init__(self, parent, background="white", padx=10, pady=10)
-
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
-
-        self.contract1 = tk.Label(self, text='', font=("Helvetica", 14, "bold"),
-                                  background="white", foreground="black")
-        self.contract1.grid(row=0, column=0, sticky="nsew")
-
-        self.contract2 = tk.Label(self, image=self.ImageItems.empty, text='', compound="center", font=("Helvetica", 14, "bold"), background="white", foreground="black")
-        self.contract2.grid(row=0, column=1)
-
-        self.contract3 = tk.Label(self, text='', font=("Helvetica", 14, "bold"),
-                                  background="white", foreground="black")
-        self.contract3.grid(row=0, column=2, sticky="nsew")
-
-    def update_contract(self, num, suit):
-        self.contract1['text'] = num
-        if (suit == 'c'):
-            self.contract2['image'] = self.ImageItems.clubT
-        elif (suit == 'h'):
-            self.contract2['image'] = self.ImageItems.heartT
-        elif (suit == 's'):
-            self.contract2['image'] = self.ImageItems.spadesT
-        elif (suit == 'd'):
-            self.contract2['image'] = self.ImageItems.diamondT
-        elif (suit == 'n'):
-            self.contract2['image'] = self.ImageItems.empty
-            self.contract2['text'] = 'NT'
-        self.contract3['text'] =''
-
-    def update_contract_dbl(self, str):
-        self.contract3['text'] = str
