@@ -118,7 +118,7 @@ class Trick:
             h += '-' + str(playercard)
             cp += 1
 
-            if not currentturn:
+            if currentturn == []:
                 currentturn = [0, 0]
             currentturn = Trick.increaseturn(currentturn)
 
@@ -149,7 +149,7 @@ class Trick:
                 c.perform()
                 output = str(buffer.getvalue()).split()
 
-                if not currentturn:
+                if currentturn == []:
                     currentturn = [0, 0]
                 currentturn = Trick.increaseturn(currentturn)
 

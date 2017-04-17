@@ -79,7 +79,7 @@ class RoundStart:
             card =  input()
 
         self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul,self.declarer, self.curplayer, self.turnnumber)
-        bgame.curplayer = self.tsession[4]
+        self.curplayer = self.tsession[4]
         return self.tsession
 
     def enter_bidding_loop(self, bid):
@@ -129,10 +129,10 @@ if debug:
         userInput = -1
         tresult = []
 
-        if bgame.curplayer != 'S':
-            tresult = bgame.enter_card(0)
-        else:
+        if bgame.curplayer == 'S' or (bgame.declarer == 'S' and bgame.curplayer == 'N'):
             tresult = bgame.enter_card(userInput)
+        else:
+            tresult = bgame.enter_card(0)
 
         bgame.history = tresult[1]
 
