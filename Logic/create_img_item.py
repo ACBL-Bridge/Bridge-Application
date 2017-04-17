@@ -12,45 +12,56 @@ class CardImage:
         self.Diamond_Suit = list()
         self.Club_Suit = list()
         self.Spade_Suit = list()
+        self.basewidth = 75
+        self.baseheight = 98
         self.github_path = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Deck/"
 
         # Store created image items into list - Heart
         for a in range(1, 14):
-            self.Heart_Suit.append(tk.PhotoImage(data=self.get_raw("Heart" + str(a + 1) + ".gif")))
+            self.Heart_Suit.append(self.resize_image(68, tk.PhotoImage(data=self.get_raw(str(a + 1) + "H.png"))))
+            # self.Heart_Suit.append(tk.PhotoImage(data=self.get_raw("Heart" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Diamond
         for a in range(1, 14):
-            self.Diamond_Suit.append(tk.PhotoImage(data=self.get_raw("Diamond" + str(a + 1) + ".gif")))
+            self.Diamond_Suit.append(self.resize_image(68, tk.PhotoImage(data=self.get_raw(str(a + 1) + "D.png"))))
+            # self.Diamond_Suit.append(tk.PhotoImage(data=self.get_raw("Diamond" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Club
         for a in range(1, 14):
-            self.Club_Suit.append(tk.PhotoImage(data=self.get_raw("Club" + str(a + 1) + ".gif")))
+            self.Club_Suit.append(self.resize_image(68, tk.PhotoImage(data=self.get_raw(str(a + 1) + "C.png"))))
+            # self.Club_Suit.append(tk.PhotoImage(data=self.get_raw("Club" + str(a + 1) + ".gif")))
 
         # Store created image items into list - Spade
         for a in range(1, 14):
-            self.Spade_Suit.append(tk.PhotoImage(data=self.get_raw("Spades" + str(a + 1) + ".gif")))
+            self.Spade_Suit.append(self.resize_image(68, tk.PhotoImage(data=self.get_raw(str(a + 1) + "S.png"))))
+            # self.Spade_Suit.append(tk.PhotoImage(data=self.get_raw("Spades" + str(a + 1) + ".gif")))
 
         # Store created image items into variables - Others
-        self.heart = tk.PhotoImage(data=self.get_raw('heart.gif'))
+        # new code
+        self.heart = self.resize_image(40, tk.PhotoImage(data=self.get_raw('gold_heart.png')))
+        self.spades = self.resize_image(40, tk.PhotoImage(data=self.get_raw('gold_spade.png')))
+        self.diamond = self.resize_image(40, tk.PhotoImage(data=self.get_raw('gold_diamond.png')))
+        self.club = self.resize_image(40, tk.PhotoImage(data=self.get_raw('gold_club.png')))
 
-        self.spades = tk.PhotoImage(data=self.get_raw('spades.gif'))
-        self.club = tk.PhotoImage(data=self.get_raw('club.gif'))
-        self.diamond = tk.PhotoImage(data=self.get_raw('diamond.gif'))
-
-        self.heartT = tk.PhotoImage(data=self.get_raw('heartT.png'))
-        self.spadesT = tk.PhotoImage(data=self.get_raw('spadesT.png'))
-        self.clubT = tk.PhotoImage(data=self.get_raw('clubT.png'))
-        self.diamondT = tk.PhotoImage(data=self.get_raw('diamondT.png'))
+        self.heartT = self.resize_image(30, tk.PhotoImage(data=self.get_raw('circle_heart.png')))
+        self.spadesT = self.resize_image(30, tk.PhotoImage(data=self.get_raw('circle_spade.png')))
+        self.clubT = self.resize_image(30, tk.PhotoImage(data=self.get_raw('circle_club.png')))
+        self.diamondT = self.resize_image(30, tk.PhotoImage(data=self.get_raw('circle_diamond.png')))
         self.nt = tk.PhotoImage(data=self.get_raw('nt.gif'))
         self.empty = tk.PhotoImage(data=self.get_raw('empty.png'))
-        self.back_card_v = tk.PhotoImage(data=self.get_raw('back_card.gif'))
-        self.back_card = tk.PhotoImage(data=self.get_raw('back_card_H.gif'))
+        self.back_card_v = self.resize_image(68, tk.PhotoImage(data=self.get_raw('gray_back.png')))
+        self.back_card = self.resize_image(98, tk.PhotoImage(data=self.get_raw('gray_back_H.png')))
 
     def get_raw(self, image):
         URL = self.github_path + image
         image_byte = urlopen(URL).read()
         image_b64 = base64.encodebytes(image_byte)
         return image_b64
+
+    def resize_image(self, base, image):
+        pip_percentage_r = int(image.width() / base)
+        temp = image.subsample(pip_percentage_r)
+        return temp
 
     def s_suit(self):
         return self.Spade_Suit
