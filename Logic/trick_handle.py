@@ -153,7 +153,11 @@ class Trick:
             currentturn = Trick.increaseturn(currentturn)
             currentturn[2][currentplayer] = str(playercard)
             currentturn[3].append(str(playercard))
-            Trick.checkwinner(currentturn, trump)
+            checkw = Trick.checkwinner(currentturn, trump)
+            if checkw != 0:
+                currentturn[3] = []
+                currentturn[2] = {'S': '', 'W': '', 'N': '', 'E': ''}
+                currentplayer = checkw
 
         if verbose:
             print("Current History: " + h)
@@ -202,7 +206,13 @@ class Trick:
                     currentturn = Trick.increaseturn(currentturn)
                     currentturn[2][pov[cp % 4]] = str(cplay)
                     currentturn[3].append(str(cplay))
-                    Trick.checkwinner(currentturn, trump)
+                    checkw = Trick.checkwinner(currentturn, trump)
+                    if checkw != 0:
+                        currentturn[3] = []
+                        currentturn[2] = {'S': '', 'W': '', 'N': '', 'E': ''}
+                        currentplayer = checkw
+
+
                 else:
                     if verbose:
                         print("ERROR PARSING XML")

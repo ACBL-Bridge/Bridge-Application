@@ -94,6 +94,9 @@ class RoundStart:
 
          if aresult[0] == 1:
             self.auctioncomplete = 1
+            self.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
+            self.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
+            self.trump = bgame.asession[4]
 
          return [aresult[0], aresult[2]]
 
