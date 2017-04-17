@@ -94,12 +94,30 @@ class RoundStart:
 
          if aresult[0] == 1:
             self.auctioncomplete = 1
-            self.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
-            self.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
-            self.trump = bgame.asession[4]
+            self.curplayer = self.pov[(bgame.self.index(aresult[3]) + 1) % 4]
+            self.declarer = self.pov[(bgame.self.index(aresult[3]))]
+            self.trump = self.asession[4]
 
          return [aresult[0], aresult[2]]
 
+    def enter_trick_loop(self, card):
+        userInput = -1
+        tresult = []
+
+        if self.curplayer == 'S' or (self.declarer == 'S' and self.curplayer == 'N'):
+            tresult = self.enter_card(userInput)
+        else:
+            tresult = self.enter_card(0)
+
+        self.history = tresult[1]
+
+        if verbose:
+            print("AI MOVES: " + str(tresult[2]))
+
+        if tresult[0] == 1:
+            self.trickscomplete = 1
+
+        return [tresult[0], tresult[2]]
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 # Both teams are vulnerable. Doubles and redoubles do not affect the game.
