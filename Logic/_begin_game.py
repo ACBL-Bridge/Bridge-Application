@@ -24,6 +24,8 @@ class RoundStart:
         # The history of the game
         self.history = ''
 
+        self.trump = ''
+
         # The declarer
         self.declarer = ''
 
@@ -44,7 +46,7 @@ class RoundStart:
 
         self.pov = ['S', 'W', 'N', 'E']
 
-        self.turnnumber = [0,0]
+        self.currentturn = [0, 0, {'S': '', 'W': '', 'N': '', 'E': ''}, []]
 
         # Create Players
         self.playerlst = []
@@ -78,8 +80,9 @@ class RoundStart:
             print("Enter Card: ", end='')
             card =  input()
 
-        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul,self.declarer, self.curplayer, self.turnnumber)
+        self.tsession = Trick.tricksession(card, self.playerlst, self.history, self.dealer, self.vul, self.declarer, self.curplayer, self.currentturn, self.trump)
         self.curplayer = self.tsession[4]
+        self.currentturn = self.tsession[3]
         return self.tsession
 
     def enter_bidding_loop(self, bid):
@@ -117,9 +120,10 @@ if debug:
         if aresult[0] == 1:
             bgame.auctioncomplete = 1
 
-            # This statement preps for the next step
+            # These statements prep for the next step
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
             bgame.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
+            bgame.trump = bgame.asession[4]
 
             if verbose:
                 print("\n")

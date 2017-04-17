@@ -1,4 +1,5 @@
 from verbose import *
+from card_value import *
 import pycurl
 from io import BytesIO
 
@@ -79,19 +80,50 @@ class Trick:
 
         return dout
 
+    # Function to check the winner of a 4 card trick.
+    @staticmethod
+    def checkwinner(turnmoves , trump):
+        winner = 0
+        if len(turnmoves[3]) == 4:
+            trump = trump.lower()
+            first = turnmoves[3][0][0]
+            plays = turnmoves[2]
+            score = {'S':CardValue.trueval[plays['S']],'W':CardValue.trueval[plays['W']],
+                     'N': CardValue.trueval[plays['N']],'E':CardValue.trueval[plays['E']]
+                     }
+            for key in score:
+                if trump in plays[key]:
+                    score[key] *=10000
+                elif trump in plays[key]:
+                    score[key] *= 100
+
+            winner = 'S'
+            for key in score:
+                if score[key] > score[winner]:
+                    winner = key
+            if verbose:
+                print('---')
+                print('Trick WINNER = ' + str(winner))
+                print('---')
+        return winner
+
+
     @staticmethod
     def increaseturn(turn):
         ct = turn[0]
         part = turn[1]
+        hold = turn[2]
+        cardlist = turn[3]
 
+        part += 1
         if part == 4:
             part = 0
             ct += 1
 
-        return [ct, part]
+        return [ct, part, hold, cardlist]
 
     @staticmethod
-    def tricksession(card, playerlst, history, dealer, vul, declarer, currentplayer, currentturn):
+    def tricksession(card, playerlst, history, dealer, vul, declarer, currentplayer, currentturn, trump):
         pov = ['S', 'W', 'N', 'E']
         h = history
         d = dealer
@@ -118,9 +150,10 @@ class Trick:
             h += '-' + str(playercard)
             cp += 1
 
-            if currentturn == []:
-                currentturn = [0, 0]
             currentturn = Trick.increaseturn(currentturn)
+            currentturn[2][currentplayer] = str(playercard)
+            currentturn[3].append(str(playercard))
+            Trick.checkwinner(currentturn, trump)
 
         if verbose:
             print("Current History: " + h)
@@ -130,6 +163,11 @@ class Trick:
 
         if sessioncomplete == 0:
             for i in range(3):
+                # Contigency for Player
+                if pov[cp % 4] == 'S':
+                    currentplayer = 'S'
+                    break
+
                 dummyturn = 0
                 # Contigency for dummies
                 if pov[cp % 4] == dummy:
@@ -149,9 +187,7 @@ class Trick:
                 c.perform()
                 output = str(buffer.getvalue()).split()
 
-                if currentturn == []:
-                    currentturn = [0, 0]
-                currentturn = Trick.increaseturn(currentturn)
+
 
                 if verbose:
                     print("Cold Output: " + str(output))
@@ -162,6 +198,11 @@ class Trick:
                     cplay = cplay.lower()
                     h += "-" + cplay
                     aimoveset.append(cplay)
+
+                    currentturn = Trick.increaseturn(currentturn)
+                    currentturn[2][pov[cp % 4]] = str(cplay)
+                    currentturn[3].append(str(cplay))
+                    Trick.checkwinner(currentturn, trump)
                 else:
                     if verbose:
                         print("ERROR PARSING XML")
