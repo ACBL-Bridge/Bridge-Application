@@ -130,6 +130,7 @@ class RoundStart:
 
 if debug:
     bgame = RoundStart()
+    gamecheck = 0
     while bgame.auctioncomplete == 0:
         userInput = -1
         aresult = bgame.enter_bid(userInput)
@@ -145,24 +146,29 @@ if debug:
             bgame.curplayer = bgame.pov[(bgame.pov.index(aresult[3]) + 1) % 4]
             bgame.declarer = bgame.pov[(bgame.pov.index(aresult[3]))]
             bgame.trump = bgame.asession[4]
+            gamecheck = 1
 
             if verbose:
                 print("\n")
                 print("Current Player: " + str(bgame.curplayer))
+        if aresult[0] == 2:
+            # Everyone passed without bidding
+            break
 
-    while bgame.trickscomplete == 0:
-        userInput = -1
-        tresult = []
+    if gamecheck:
+        while bgame.trickscomplete == 0:
+            userInput = -1
+            tresult = []
 
-        if bgame.curplayer == 'S' or (bgame.declarer == 'S' and bgame.curplayer == 'N'):
-            tresult = bgame.enter_card(userInput)
-        else:
-            tresult = bgame.enter_card(0)
+            if bgame.curplayer == 'S' or (bgame.declarer == 'S' and bgame.curplayer == 'N'):
+                tresult = bgame.enter_card(userInput)
+            else:
+                tresult = bgame.enter_card(0)
 
-        bgame.history = tresult[1]
+            bgame.history = tresult[1]
 
-        if verbose:
-            print("AI MOVES: " + str(tresult[2]))
+            if verbose:
+                print("AI MOVES: " + str(tresult[2]))
 
-        if tresult[0] == 1:
-            bgame.trickscomplete = 1
+            if tresult[0] == 1:
+                bgame.trickscomplete = 1

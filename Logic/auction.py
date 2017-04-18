@@ -103,7 +103,10 @@ class AuctionSession:
             else:
                 print('NO GAME')
 
-        olst = [0, h, aimoveset]
+        if len(h) == 5:
+            sessioncomplete = 2
+
+        olst = [sessioncomplete, h, aimoveset, 'S', 0]
         if dec >= 0 and err == 0 and sessioncomplete == 1:
             olst = [1, h, aimoveset, pov[dec], highval]
             for i in range(len(hlst)):
@@ -111,7 +114,6 @@ class AuctionSession:
                     lowsuitsave.append(hlst[i])
                 if (i % 4 == dec and highval[1] in hlst[i]):
                     highsuitsave.append(hlst[i])
-
 
             if(len(highsuitsave) > 0 and len(lowsuitsave) > 0):
                 if lowsuitsave[0][0] < highsuitsave[0][0]:

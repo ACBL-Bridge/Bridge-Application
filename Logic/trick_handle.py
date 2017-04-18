@@ -85,16 +85,22 @@ class Trick:
     def checkwinner(turnmoves , trump):
         winner = 0
         if len(turnmoves[3]) == 4:
+
             trump = trump.lower()
+            trump = trump[1]
             first = turnmoves[3][0][0]
             plays = turnmoves[2]
+
+            if verbose:
+                print('--TCHECK-' + str(trump) + '-' + str(first))
+
             score = {'S':CardValue.trueval[plays['S']],'W':CardValue.trueval[plays['W']],
                      'N': CardValue.trueval[plays['N']],'E':CardValue.trueval[plays['E']]
                      }
             for key in score:
                 if trump in plays[key]:
                     score[key] *=10000
-                elif trump in plays[key]:
+                elif first in plays[key]:
                     score[key] *= 100
 
             winner = 'S'
@@ -204,7 +210,11 @@ class Trick:
                     aimoveset.append(cplay)
 
                     currentturn = Trick.increaseturn(currentturn)
-                    currentturn[2][pov[cp % 4]] = str(cplay)
+                    if dummyturn == 0:
+                        currentturn[2][pov[cp % 4]] = str(cplay)
+                    else:
+                        currentturn[2][pov[(cp + 2) % 4]] = str(cplay)
+
                     currentturn[3].append(str(cplay))
                     checkw = Trick.checkwinner(currentturn, trump)
                     if checkw != 0:
