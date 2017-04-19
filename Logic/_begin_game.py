@@ -117,7 +117,8 @@ class RoundStart:
         if tresult[0] == 1:
             self.trickscomplete = 1
 
-        return [tresult[0], tresult[2]]
+        # tresult list = Session boolean, AI Moveset, Latest Trick Winner
+        return [tresult[0], tresult[2], tresult[5]]
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
 # Both teams are vulnerable. Doubles and redoubles do not affect the game.
