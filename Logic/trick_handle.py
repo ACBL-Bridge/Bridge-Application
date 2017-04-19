@@ -149,6 +149,7 @@ class Trick:
         cp = pov.index(currentplayer)
 
         err = 0
+        trickwinner = ''
 
         playercard = card
 
@@ -164,6 +165,9 @@ class Trick:
                 currentturn[3] = []
                 currentturn[2] = {'S': '', 'W': '', 'N': '', 'E': ''}
                 currentplayer = checkw
+                trickwinner= currentplayer
+                olst = [0, h, aimoveset, currentturn, currentplayer, trickwinner]
+                return olst
 
         if verbose:
             print("Current History: " + h)
@@ -177,7 +181,9 @@ class Trick:
                 if pov[cp % 4] == 'S':
                     currentplayer = 'S'
                     break
-
+                elif pov[cp % 4] == 'N' and 'S' == dummy:
+                    currentplayer = 'N'
+                    break
                 dummyturn = 0
                 # Contigency for dummies
                 if pov[cp % 4] == dummy:
@@ -221,6 +227,8 @@ class Trick:
                         currentturn[3] = []
                         currentturn[2] = {'S': '', 'W': '', 'N': '', 'E': ''}
                         currentplayer = checkw
+                        trickwinner = currentplayer
+                        break
 
 
                 else:
@@ -248,10 +256,10 @@ class Trick:
             sessioncomplete = 1
 
 
-        olst = [0, h, aimoveset, currentturn, currentplayer]
+        olst = [0, h, aimoveset, currentturn, currentplayer, trickwinner]
 
         if sessioncomplete == 1:
-            olst = [1, h, aimoveset, currentturn, currentplayer]
+            olst = [1, h, aimoveset, currentturn, currentplayer, trickwinner]
 
         print("Raw List: " + str(olst))
         return olst

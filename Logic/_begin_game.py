@@ -101,10 +101,10 @@ class RoundStart:
          return [aresult[0], aresult[2]]
 
     def enter_trick_loop(self, card):
-        userInput = -1
+        userInput = card
         tresult = []
 
-        if self.curplayer == 'S' or (self.declarer == 'S' and self.curplayer == 'N'):
+        if self.curplayer == 'S' or (self.declarer == 'S' and self.curplayer == 'N') or (self.declarer == 'N' and self.curplayer == 'S'):
             tresult = self.enter_card(userInput)
         else:
             tresult = self.enter_card(0)
@@ -160,7 +160,7 @@ if debug:
             userInput = -1
             tresult = []
 
-            if bgame.curplayer == 'S' or (bgame.declarer == 'S' and bgame.curplayer == 'N'):
+            if bgame.curplayer == 'S' or (bgame.declarer == 'S' and bgame.curplayer == 'N') or (bgame.declarer == 'N' and bgame.curplayer == 'S'):
                 tresult = bgame.enter_card(userInput)
             else:
                 tresult = bgame.enter_card(0)
