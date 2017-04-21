@@ -4,13 +4,16 @@ from game_display import *
 # class for bidding table
 class Popout(tk.Frame):
     def __init__(self, parent, img, bgame, cw):
-
         self.ImageItems = img
         self.new_bgame  = bgame
         self.contract_Window = cw
         # This holds tha last bid and at the end would be the final contract
+        self.declarer = ''
+        self.dummy = ''
         self.lastbid = ''
-        self.current_declarer = ''
+        self.highestbid = ''
+        self.doubleRedouble = 0
+        self.lastFourMove = []
         # This list holds all image items on the bidding table - heart, spade, diamond and NT
         self.button = list()
         tk.Frame.__init__(self, parent, background="black", padx=10,
@@ -27,7 +30,7 @@ class Popout(tk.Frame):
 
         self.pass_btn = tk.Button(self, text="Pass", background="black",
                                   foreground="white", command=self.pass_clic)
-        self.double_btn = tk.Button(self, text="Double", background="black",
+        self.double_btn = tk.Button(self, text="Double", background="black", state="disabled",
                                     foreground="white", command=self.dbl_redbl_clic)
         self.continue_btn = tk.Button(self, text="Continue", background="black",
                                       foreground="white", command=self.close)
@@ -54,6 +57,7 @@ class Popout(tk.Frame):
         self.double_btn.grid(row=8, column=3, columnspan=3)
 
     def pass_clic(self):
+        self.update_move_list('p')
         self.newWindow.add_bid_different('p')
         lst = self.new_bgame.enter_bidding_loop('p')
         self.robot_turn(lst)
@@ -78,19 +82,19 @@ class Popout(tk.Frame):
         self.newWindow.Add_bid(str(num), suit)
         self.contract_Window.update_contract(str(num), suit)
         self.lastbid = str(num) + suit
-        self.current_declarer = 's'
+        self.update_move_list(self.lastbid)
         lst = self.new_bgame.enter_bidding_loop(str(num)+suit)
         self.robot_turn(lst)
 
     def robot_turn(self, lst):
         temp_idx = 0
         for eachplayer in lst[1]:
+            self.update_move_list(eachplayer)
             if not self.ifpass_dbl_redbl(eachplayer):
                 self.disable_btn(eachplayer[:-1], eachplayer[-1])
                 self.newWindow.Add_bid(eachplayer[:-1], eachplayer[-1])
                 self.contract_Window.update_contract(eachplayer[:-1], eachplayer[-1])
                 self.lastbid = eachplayer
-                self.current_declarer = self.check_currentplayer(temp_idx)
                 temp_idx += 1
             else:
                 if eachplayer == 'p':
@@ -100,29 +104,59 @@ class Popout(tk.Frame):
                     self.newWindow.add_bid_different(eachplayer)
                     self.contract_Window.update_contract_dbl('X')
                     self.lastbid = self.lastbid + 'x'
-                    self.current_declarer = self.check_currentplayer(temp_idx)
                     temp_idx += 1
                 elif eachplayer == 'xx':
                     self.newWindow.add_bid_different(eachplayer)
                     self.contract_Window.update_contract_dbl('XX')
                     self.lastbid = self.lastbid + 'xx'
-                    self.current_declarer = self.check_currentplayer(temp_idx)
                     temp_idx += 1
 
-        if self.lastbid.count('x') == 0:
+        if self.lastFourMove[3] != 'p':
+            self.disableEnableDButton(self.lastFourMove[3])
+        else:
+            if self.lastFourMove[2] != 'p':
+                if self.double_btn['text'] == 'Redouble':
+                    self.double_btn['text'] = 'Double'
+                if self.double_btn['state'] == 'normal':
+                    self.double_btn.config(state="disabled")
+            else:
+                if self.lastFourMove[1] != 'p':
+                    self.disableEnableDButton(self.lastFourMove[1])
+
+        self.ifsession_complete(lst[0], lst[2], lst[3])
+
+    def disableEnableDButton(self, bid):
+        if bid.count('x') == 0:
             if self.double_btn['text'] == 'Redouble':
                 self.double_btn['text'] = 'Double'
             if self.double_btn['state'] == 'disabled':
                 self.double_btn.config(state="normal")
-        elif self.lastbid.count('x') == 1:
+        elif bid.count('x') == 1:
             self.double_btn['text'] = 'Redouble'
-        elif self.lastbid.count('x') == 2:
+        elif bid.count('x') == 2:
             self.double_btn.config(state="disabled")
 
-        self.ifsession_complete(lst[0])
+    def update_move_list(self, bid):
+        if len(self.lastFourMove) == 4:
+            self.lastFourMove.pop(0)
+        self.lastFourMove.append(bid)
 
-    def ifsession_complete(self, complete):
+    def getdummy(self, d):
+        if d == 's':
+            return 'n'
+        if d == 'w':
+            return 'e'
+        if d == 'n':
+            return 's'
+        if d == 'e':
+            return 'w'
+
+    def ifsession_complete(self, complete, declarer, high):
         if complete:
+            self.declarer = declarer.lower()
+            self.dummy = self.getdummy(self.declarer)
+            self.highestbid = high
+            self.doubleRedouble = self.lastbid.count('x')
             self.continue_btn_event()
 
     def ifpass_dbl_redbl(self, str):
@@ -155,17 +189,6 @@ class Popout(tk.Frame):
         if suit == 'n':
             return (5 * row) + 4
 
-    def check_currentplayer(self, index):
-        if index == 0:
-            print('w')
-            return 'w'
-        elif index == 1:
-            print('n')
-            return 'n'
-        else:
-            print('e')
-            return 'e'
-
     def continue_btn_event(self):
         self.pass_btn.destroy()
         self.double_btn.destroy()
@@ -178,8 +201,7 @@ class Popout(tk.Frame):
         self.newWindow.forget()
         self.destroy()
         self.newWindow.destroy()
-        # return [lastbid, current_declerer]
-
+        self.contract_Window.update_contract_declarer(self.declarer)
 
 # claas for new table that keep records of bidding
 class NewPopout(tk.Frame):
