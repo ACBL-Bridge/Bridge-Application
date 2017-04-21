@@ -4,8 +4,6 @@ import tkinter as tk
 class Popout_contract(tk.Frame):
     def __init__(self, parent, img):
         self.ImageItems = img
-        self.ns_count = 0
-        self.we_count = 0
         tk.Frame.__init__(self, parent, background="white", padx=10, pady=10)
 
         self.grid_columnconfigure(0, weight=1)
@@ -21,6 +19,10 @@ class Popout_contract(tk.Frame):
         self.contract3 = tk.Label(self, text='', font=("Helvetica", 14, "bold"),
                                   background="white", foreground="black")
         self.contract3.grid(row=0, column=2, sticky="nsew")
+
+        self.contract4 = tk.Label(self, text='', font=("Helvetica", 14, "bold"),
+                                  background="white", foreground="black")
+        self.contract4.grid(row=0, column=3, sticky="nsew")
 
         self.LabelWe =  tk.Label(self, text='NS', font=("Helvetica", 14, "bold"),
                                   background="white", foreground="black")
@@ -55,9 +57,11 @@ class Popout_contract(tk.Frame):
     def update_contract_dbl(self, str):
         self.contract3['text'] = str
 
-    def add_ns(self):
-        self.ns_count += 1
-        self.NS['text'] = str(self.ns_count)
-    def add_we(self):
-        self.we_count += 1
-        self.WE['text'] = str(self.we_count)
+    def update_contract_declarer(self, d):
+        self.contract4['text'] = d.upper()
+
+    def add_ns(self, tricks):
+        self.NS['text'] = str(tricks)
+
+    def add_we(self, tricks):
+        self.WE['text'] = str(tricks)
