@@ -6,10 +6,6 @@ from PIL import Image
 class Card_Display:
 
     def __init__(self, canv, img):
-        """self.south_hand = dict()
-        self.west_hand = dict()
-        self.north_hand = dict()
-        self.east_hand = dict()"""
         self.south_hand = []
         self.west_hand = []
         self.north_hand = []
@@ -50,7 +46,7 @@ class Card_Display:
         ygap = self.baseheight / 6
 
         xgap = self.basewidth/2
-        start_x = self.get_start_x_ns(4)
+        start_x = self.get_start_x_ns(self.numSuit(lst[2].hand))
         x1 = start_x
         x2 = start_x + self.basewidth + xgap
         x3 = start_x + 2 * (self.basewidth + xgap)
@@ -93,17 +89,17 @@ class Card_Display:
         self.clear_hands(self.east_hand)
         self.east_hand = []
 
-        xcoords= self.get_x_coords()
-        xgap=self.basewidth/4
+        xcoords =  self.get_x_coords()
+        xgap = self.basewidth/4
 
-        x1 = xcoords[1] - (xgap * self.find_number_of_suit_card(3, lst[3].hand))
-        x2 = xcoords[1] - (xgap * self.find_number_of_suit_card(2, lst[3].hand))
-        x3 = xcoords[1] - (xgap * self.find_number_of_suit_card(0, lst[3].hand))
-        x4 = xcoords[1] - (xgap * self.find_number_of_suit_card(1, lst[3].hand))
+        x1 = xcoords[1] - (xgap * self.find_number_of_suit_card(3, lst[3].hand) - 1)
+        x2 = xcoords[1] - (xgap * self.find_number_of_suit_card(2, lst[3].hand) - 1)
+        x3 = xcoords[1] - (xgap * self.find_number_of_suit_card(0, lst[3].hand) - 1)
+        x4 = xcoords[1] - (xgap * self.find_number_of_suit_card(1, lst[3].hand) - 1)
 
         # y-coordinate
         ygap = self.baseheight/6
-        start_y = self.get_start_y_we(4)
+        start_y = self.get_start_y_we(self.numSuit(lst[3].hand))
         y1 = start_y
         y2 = start_y + ygap
         y3 = start_y + 2 * ygap
@@ -149,7 +145,7 @@ class Card_Display:
         xgap = self.basewidth/4
         # y-coordinate
         ygap = self.baseheight/6
-        start_y = self.get_start_y_we(4)
+        start_y = self.get_start_y_we(self.numSuit(lst[1].hand))
         y1 = start_y
         y2 = start_y + ygap
         y3 = start_y + 2 * ygap
@@ -275,7 +271,7 @@ class Card_Display:
         w = self.canvas.winfo_screenwidth()
         card_distance = self.basewidth/4
 
-        start_x = (w-(4 * self.basewidth + card_distance * (nsuit - 1)))/2
+        start_x = (w-(nsuit * self.basewidth + card_distance * (nsuit - 1)))/2
 
         return start_x
 
@@ -298,3 +294,13 @@ class Card_Display:
         y2 = self.canvas.winfo_screenheight() - 100
 
         return y1, y2
+
+    def numSuit(self, hand):
+        n = 0
+        current_suit = 5
+        print(hand)
+        for suit in hand:
+            if suit.suit != current_suit:
+                n += 1
+                current_suit = suit.suit
+        return n
