@@ -14,23 +14,22 @@ class MainMenu(Frame):
         parent.overrideredirect(1)
 
         parent.geometry("%dx%d+0+0" % (w, h))
-        frame = Frame(parent, width = w, height = h)
-        frame.pack(expand=True)
+        frame = Frame(parent, width = w, height = h).place(x=350, y=450)
+        #frame.pack(expand=True)
 
         #canvas = Canvas(parent, width=w, height=h)
 
         # scale_width = w / 3900
         # scale_height = h / 2613
         web = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Login/"
-        URL = "login_background_test.jpg"
+        URL = "login_background_resized.jpg"
         u = urlopen(web + URL)
         raw_data = u.read()
         u.close()
         im = Image.open(BytesIO(raw_data))
         bckgrd = ImageTk.PhotoImage(im)
 
-        # bckgrd_zoom = bckgrd.subsample(int(round(scale_width, 0)), int(round(scale_height,0)))
-        # bckgrd_zoom = bckgrd.subsample(15, 15)
+
         login_bckgrd = Label (frame , image = bckgrd)
         login_bckgrd.image = bckgrd
         login_bckgrd.place(x=0, y=0, relwidth=1, relheight=1)
