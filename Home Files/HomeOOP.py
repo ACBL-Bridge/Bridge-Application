@@ -1,23 +1,32 @@
-#import tkinter as tk
 from DailyChallengeDays import *
+from storePage import *
 from tkinter import *
+import mysql.connector as mysql
+from MySQLdb import dbConnect
+from PIL import Image, ImageTk
 
 class Home:
-    def __init__(self, master):
+    def __init__(self, master,user):
         #Initialize window size and background image
         self.master = master
-        width = 800
-        height = 680
-        master.minsize(width, height)
-        master.maxsize(width, height)
 
-        self.background_image= PhotoImage(file = "C:\\Python Capstone\\Bridge-game-for-all.png")
+        width, height = master.winfo_screenwidth(), master.winfo_screenheight()
+        #master.overrideredirect(1)
+        master.geometry("%dx%d+0+0" % (width, height))
+
+        self.background_image= PhotoImage(file = "C:\\Python Capstone\\Bgrd-1.png")
         self.background_label = Label(master, image=self.background_image)
         self.background_label.image = self.background_image
         self.background_label.place(x=0,y=0,relwidth=1,relheight=1)
+        '''canvas = Canvas(master, width=width, height=height)
+        canvas.grid(row=0, column=0)
+        photo = PhotoImage(file = "C:\\Python Capstone\\Bgrd-1.png" )
+        label = Label(image=photo)
+        label.image = photo
+        canvas.create_image(0,0, image=photo, anchor = CENTER)'''
 
         #Creates the frame that the four buttons will appear on
-        self.buttonFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
+        self.buttonFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
 
         global completed
         completed = 0
@@ -92,7 +101,7 @@ class Home:
             x = (ws/2) - (width/2)
             y = (hs/2) - (height/2)
 
-            top2.geometry('%dx%d+%d+%d' % (width/3 + 50, height/3, x-250, y+100))
+            top2.geometry('%dx%d+%d+%d' % (width/3, height/3, x, y))
         
         #Play button method for daily challenge
         def playDailyFrame(dayCounter):
@@ -118,7 +127,7 @@ class Home:
             x = (ws/2) - (width/2)
             y = (hs/2) - (height/2)
 
-            top1.geometry('%dx%d+%d+%d' % (width/3 + 50, height/3, x-250, y+100))
+            top1.geometry('%dx%d+%d+%d' % (width/3, height/3, x, y))
             
         #Time method(s)
         def getTime():
@@ -181,10 +190,10 @@ class Home:
             
             if 'playFrame' not in globals():
                 global playFrame
-                playFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.random = Button(playFrame, text="RANDOM GAME", width=20)
-                self.friend = Button(playFrame, text="PLAY WITH FRIENDS", width=20)
-                self.robot = Button(playFrame, text="PLAY WITH ROBOTS", width=20)
+                playFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
+                self.random = Button(playFrame, text="RANDOM GAME",bg="red",fg="white", width=20)
+                self.friend = Button(playFrame, text="PLAY WITH FRIENDS",bg="red",fg="white", width=20)
+                self.robot = Button(playFrame, text="PLAY WITH ROBOTS",bg="red",fg="white", width=20)
 
                 playFrameRow = 5
                 for row in range(playFrameRow):
@@ -194,7 +203,7 @@ class Home:
                 self.friend.grid(row=2, column=0)
                 self.robot.grid(row=4, column=0)
 
-                playFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
+                playFrame.grid(column=8, row=21, columnspan=2, rowspan=2)
                 
         def dailyPress():
             if 'playFrame' in globals():
@@ -213,8 +222,8 @@ class Home:
             if 'dailyFrame' and 'statsFrame' not in globals():
                 global dailyFrame
                 global statsFrame
-                dailyFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                statsFrame = Frame(master, borderwidth=5, relief="sunken", width=100, height=100)
+                dailyFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
+                statsFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=100, height=100)
 
                 self.dailyRows = 6
                 self.dailyCols = 7
@@ -269,17 +278,17 @@ class Home:
                 for col in range(self.dailyCols):
                         statsFrame.grid_columnconfigure(col)
 
-                self.statsHeader = Label(statsFrame, text="DAILY CHALLENGE STATS")
+                self.statsHeader = Label(statsFrame, text="DAILY CHALLENGE STATS",bg="black",fg="white")
                 self.statsHeader.grid(row=0, column=0, sticky='we')
 
-                self.completed = Label(statsFrame, text="Completed: "+str(completed))
+                self.completed = Label(statsFrame, text="Completed: "+str(completed),bg="black",fg="white")
                 self.completed.grid(row=1, column=0, sticky='w')
 
-                self.score = Label(statsFrame, text="Monthly Score: "+str(score))
+                self.score = Label(statsFrame, text="Monthly Score: "+str(score),bg="black",fg="white")
                 self.score.grid(row=2, column=0, sticky='w')
 
-                dailyFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
-                statsFrame.grid(column = 11, row=13)
+                dailyFrame.grid(column=8, row=20, columnspan=2, rowspan=2)
+                statsFrame.grid(column = 11, row=20)
             
         def tournPress():
             if 'playFrame' in globals():
@@ -300,11 +309,11 @@ class Home:
                 
             if 'tournFrame' not in globals():
                 global tournFrame
-                tournFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.tempLabel = Label(tournFrame, text="TOURNAMENT FRAME PLACEHOLDER")
+                tournFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
+                self.tempLabel = Label(tournFrame, text="TOURNAMENT FRAME PLACEHOLDER",bg="red",fg="white")
                 self.tempLabel.grid(row=0, column=0)
 
-                tournFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
+                tournFrame.grid(column=8, row=23, columnspan=2, rowspan=2)
 
         def leaderPress():
             if 'playFrame' in globals():
@@ -325,11 +334,72 @@ class Home:
                         
             if 'leaderFrame' not in globals():
                 global leaderFrame
-                leaderFrame = Frame(master, borderwidth=5, relief="sunken", width=200, height=300)
-                self.tempLabel = Label(leaderFrame, text="LEADERBOARD FRAME PLACEHOLDER")
+                leaderFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
+                self.tempLabel = Label(leaderFrame, text="LEADERBOARD FRAME PLACEHOLDER",bg="red",fg="white")
                 self.tempLabel.grid(row=0, column=0)
 
-                leaderFrame.grid(column=8, row=13, columnspan=2, rowspan=2)
+                leaderFrame.grid(column=8, row=23, columnspan=2, rowspan=2)
+
+        def myProfileScreen(self):
+            top = Toplevel(self)
+            w, h = top.winfo_screenwidth(), top.winfo_screenheight()
+            top.overrideredirect(1)
+            w, h = self.winfo_screenwidth(), self.winfo_screenheight()
+            top.overrideredirect(1)
+            top.geometry("%dx%d+0+0" % (w, h))
+            topFrame = Frame(top)
+            topFrame.pack()
+            bottomFrame = Frame(top)
+            bottomFrame.pack(side=BOTTOM)
+            rightFrame = Frame(top)
+            rightFrame.pack(side= RIGHT)
+            leftFrame = Frame(top)
+            leftFrame.pack(side=LEFT)
+
+            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@DB stuff@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            #entry_user.get() //username
+            var = dbConnect()
+            dbconn = mysql.connect(host=var.host, user=var.user, password=var.password, db=var.db)
+            cur = dbconn.cursor()  # Cursor object - required to execute all queries
+
+            # get all info from playerinfo and playerstats using current username
+            cur.execute(
+                "SELECT playerinfo.firstname, playerinfo.lastname, playerinfo.username, playerinfo.email, playerinfo.signUpDate, playerinfo.districtID, playerinfo.ACLnum, playerstats.dealsplayed, playerstats.level, playerstats.exp, playerstats.coins, playerstats.tournys FROM playerstats INNER JOIN playerinfo ON playerinfo.ID=playerstats.ID AND playerinfo.username='%s'" % user)
+            for namerow in cur.fetchall():  # print all info
+                fn = namerow[0]  # firstname
+                ln = namerow[1]  # lastname
+                un = namerow[2] #username
+                em = namerow[3]  # email
+                sData = namerow[4] # signUpDate
+                districtID = namerow[5] # District ID
+                acblNumba = namerow[6] # ACBL Number
+                dPlay = namerow[7] #deals played
+                lvl = namerow[8] # level
+                exp = namerow[9] # experience
+                coins = namerow[10] # coins
+                tornys = namerow[11] # tournaments
+
+            dbconn.close() #close db connection
+            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+            label = Label(topFrame, text="LET'S PLAY BRIDGE",font =('Coralva', 42)).pack(side="top", fill="both", expand=True)
+            mpLabel = Label(rightFrame, text='My Profile: ', font = ('Comic Sans MS',24)).grid(ipadx = 200, columnspan = 2)
+            nameLabel = Label(rightFrame, text="Name: %s %s" % (fn, ln), font = ('Comic Sans MS',14)).grid(row=1, column=0, sticky = W)
+            userLabel = Label(rightFrame, text='Username: %s' % un, font = ('Comic Sans MS',14)).grid(row=2, column=0, sticky = W)
+            emailLabel = Label (rightFrame, text='Email: %s' % em, font = ('Comic Sans MS',14)).grid(row=3, column=0, sticky = W)
+            sLabel = Label(rightFrame, text='Signup Date: %s' %sData, font = ('Comic Sans MS',14)).grid(row=4, column=0, sticky = W)
+            disIDLabel = Label(rightFrame, text='DistrictID: %s' % districtID , font = ('Comic Sans MS',14)).grid(row=5, column=0, sticky = W)
+            ACBLnumLabel = Label(rightFrame, text='ACBL #: %s' % acblNumba, font = ('Comic Sans MS',14)).grid(row=6, column=0, sticky = W)
+            nothing = Label(rightFrame).grid(row=7, column=0)
+            msLabel= Label(rightFrame, text='My Stats', font = ('Comic Sans MS',14, 'bold')).grid(row=8, column=0, sticky = W)
+            dpLabel = Label(rightFrame, text='Deals Played: %s' %dPlay, font = ('Comic Sans MS',14)).grid(row=9, column=0, sticky = W)
+            levelLabel = Label(rightFrame, text='Level: %s' % lvl, font = ('Comic Sans MS',14)).grid(row=10, column=0, sticky = W)
+            expLabel = Label(rightFrame, text='Experience: %s' % exp, font = ('Comic Sans MS',14)).grid(row=11, column=0, sticky = W)
+            coinsLabel = Label(rightFrame, text='Coins: %s' % coins, font = ('Comic Sans MS',14)).grid(row=12, column=0, sticky = W)
+            tourLabel = Label(rightFrame, text='Tournaments: %s' % tornys, font = ('Comic Sans MS',14)).grid(row=13, column=0, sticky = W)
+
+            #b = Button(bottomFrame, text="HOME",font = 'Arial 12').pack(side=LEFT)   #FIND A IMAGE OF A HOUSE
+            quitButton = Button(bottomFrame, text="Go Back", command=top.destroy, font = 'Arial 12').pack(side = RIGHT) 
 
         global dayList
         dayList = [] #use for daily challenge
@@ -339,10 +409,10 @@ class Home:
         
 
         #Creates the buttons, labels them, and associates appropriate methods with each button
-        self.play = Button(self.buttonFrame, text="PLAY", width=20, command=playPress)
-        self.daily = Button(self.buttonFrame, text="DAILY CHALLENGE", width=20, command=dailyPress)
-        self.tourn = Button(self.buttonFrame, text="TOURNAMENTS", width=20, command=tournPress)
-        self.leader = Button(self.buttonFrame, text="LEADERBOARD", width=20, command=leaderPress)
+        self.play = Button(self.buttonFrame, text="PLAY", width=20,bg="red",fg="white", command=playPress)
+        self.daily = Button(self.buttonFrame, text="DAILY CHALLENGE", width=20,bg="red",fg="white", command=dailyPress)
+        self.tourn = Button(self.buttonFrame, text="TOURNAMENTS", width=20,bg="red",fg="white", command=tournPress)
+        self.leader = Button(self.buttonFrame, text="LEADERBOARD", width=20,bg="red",fg="white", command=leaderPress)
 
         #Creates rows in buttonFrame to allow for button positioning in the frame
         self.buttonRow = 7
@@ -356,7 +426,7 @@ class Home:
         self.leader.grid(row=6, column=0)
 
         #Creates rows and columns in master to allow for positioning of all elements within frame
-        self.numCol = self.numRow = 20
+        self.numCol = self.numRow = 50
 
         for row in range(self.numRow):
             master.grid_rowconfigure(row, minsize=20)
@@ -366,23 +436,44 @@ class Home:
 
         master.grid()
         
-        self.playMsg = Label(master, text="LET'S PLAY BRIDGE")
-        self.userName = Label(master, text="Logged in as: ")
+        self.playMsg = Label(master, text="LET'S PLAY BRIDGE",font=(None,20))
+        self.userName = Label(master, text="Logged in as: " + user)
        
         self.userName.grid(column=0, row=0)
-        self.playMsg.place(x=350, y=0) #use place instead of grid so that button presses wont reposition msg
+        self.playMsg.place(x=850, y=0) #use place instead of grid so that button presses wont reposition msg
         #self.buttonFrame.grid(column=0, row=12, columnspan=2, rowspan=2)
-        self.buttonFrame.place(x=25, y=250)
+        self.buttonFrame.place(x=75, y=400)
 
    
 
         #--- Menu Creation ---
 
-        self.optionList=('View Profile', 'Tourney Results', 'Tutorial', 'Settings', 'Log Out')
+        self.menuImage = PhotoImage(file="C:\\Python Capstone\\menu-icon-15.png")
+        self.displayMenuImage = self.menuImage.subsample(8,8)
+        
+        self.optionList=['View Profile', 'Tourney Results', 'Tutorial', 'Settings', 'Log Out']
         self.menu = StringVar()
         self.menu.set('Options')
         self.drop = OptionMenu(master, self.menu, *self.optionList)
-        self.drop.place(x=600, y=0)
+        self.drop.configure(indicatoron=0, image=self.displayMenuImage)
+        self.drop.image=self.menuImage
+        self.drop.place(x=1800, y=0)
+        #self.drop.grid(column=50, row=0)
+
+        def callback(*args):
+            choice = self.menu.get()
+            if choice == 'View Profile':
+                myProfileScreen(master)
+            elif choice == 'Log Out':
+                master.destroy()
+
+        
+        self.menu.trace('w', callback)
+        #self.choice = self.menu.trace('w', callback)
+
+
+        
+        
 
         #--- Store ---
         
@@ -391,10 +482,10 @@ class Home:
         #Decreases the size of original photo by using every 8th pixel in each row and column
         self.displayStorePhoto = self.storePhoto.subsample(8,8) 
 
-        self.store = Button(master, image=self.displayStorePhoto)
+        self.store = Button(master, image=self.displayStorePhoto, command= lambda: StoreScreen())
         self.store.image = self.storePhoto #keep reference to picture, other will be garbage collected
 
-        self.store.place(x=600, y=530)
+        self.store.place(x=1700, y=870)
         
 
 def main():
