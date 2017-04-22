@@ -1,4 +1,7 @@
 from tkinter import *
+from PIL import Image, ImageTk
+from urllib.request import urlopen
+from io import BytesIO
 import mysql.connector as mysql
 from MySQLdb import dbConnect
 import datetime
@@ -7,32 +10,55 @@ import datetime
 class MainMenu(Frame):
     def __init__(self, parent):  #The very first screen of the web app
         Frame.__init__(self, parent)
-        frame = Frame(parent)
-        frame.pack()
-
         w, h = parent.winfo_screenwidth(), parent.winfo_screenheight()
         parent.overrideredirect(1)
+
         parent.geometry("%dx%d+0+0" % (w, h))
+        frame = Frame(parent, width = w, height = h)
+        frame.pack(expand=True)
 
-        #bkgrd = PhotoImage(file="C:\\Users\\kanip\\PycharmProjects\\Desktop\\Bridge_played_cards_after_game.png")
-        #bkgrd_label = Label(frame, image=bkgrd)
-        #bkgrd_label.image = bkgrd
-        #bkgrd_label.place(x=0, y=0, relwidth=1, relheight= 1)
+        #canvas = Canvas(parent, width=w, height=h)
 
-        titleLabel = Label(frame, text="LET'S PLAY BRIDGE",fg ="black" ,font ='Arial 36')
-        titleLabel.pack(side="top",pady = 150)
+        # scale_width = w / 3900
+        # scale_height = h / 2613
+        web = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Login/"
+        URL = "login_background_test.jpg"
+        u = urlopen(web + URL)
+        raw_data = u.read()
+        u.close()
+        im = Image.open(BytesIO(raw_data))
+        bckgrd = ImageTk.PhotoImage(im)
 
-        loginButton = Button(frame, text="Existing User",fg ="blue",font ="Arial 14",command= self.LoginScreen)
-        loginButton.pack(side = 'top')
+        # bckgrd_zoom = bckgrd.subsample(int(round(scale_width, 0)), int(round(scale_height,0)))
+        # bckgrd_zoom = bckgrd.subsample(15, 15)
+        login_bckgrd = Label (frame , image = bckgrd)
+        login_bckgrd.image = bckgrd
+        login_bckgrd.place(x=0, y=0, relwidth=1, relheight=1)
 
-        signupButton = Button(frame, text="Sign up", fg ="blue",font ="Arial 14",command= self.SignupScreen)
-        signupButton.pack(side ="top")
 
-        quitButton = Button(frame, text="Quit",font ="Arial 14",command= quit)
+        titleLabel = Label(frame, text="LET'S PLAY BRIDGE", fg="black", font='Arial 36')
+        titleLabel.pack(side="top", pady=150)
+
+        loginButton = Button(frame, text="Existing User", fg="blue", font="Arial 14", command=self.LoginScreen)
+        loginButton.pack(side='top')
+
+        signupButton = Button(frame, text="Sign up", fg="blue", font="Arial 14", command=self.SignupScreen)
+        signupButton.pack(side="top")
+
+        quitButton = Button(frame, text="Quit", font="Arial 14", command=quit)
         quitButton.pack(side="top")
 
-        #myProfileButton = Button(frame, text="My Profile", fg="blue", font="Arial 14", command=self.myProfileScreen)
-        #myProfileButton.pack(side="right")
+        # titleLabel = canvas.create_text(300,0, text = "LET'S PLAY BRIDGE", font = ("Arial", 30))
+        #
+        # loginButton = Button(canvas, text="Existing User",fg ="blue",font ="Arial 14",command= self.LoginScreen) #.place(x = 300, y = 450)
+        # loginButton.pack(side = 'bottom')
+        #
+        # signupButton = Button(canvas, text="Sign up", fg ="blue",font ="Arial 14",command= self.SignupScreen) #.place(x = 300, y = 460 )
+        # signupButton.pack(side ="bottom")
+        #
+        # quitButton = Button(canvas, text="Quit",font ="Arial 14",command= quit) #.place(x=300, y=470)
+        # quitButton.pack(side="bottom")
+
 
     ####################################Login - GUI ###########################
     def LoginScreen(self):
