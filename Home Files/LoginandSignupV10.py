@@ -8,32 +8,40 @@ import datetime
 class MainMenu(Frame):
     def __init__(self, parent):  #The very first screen of the web app
         Frame.__init__(self, parent)
-        frame = Frame(parent)
-        frame.pack()
-
         w, h = parent.winfo_screenwidth(), parent.winfo_screenheight()
-        parent.overrideredirect(1)
+        #parent.overrideredirect(1)
+
         parent.geometry("%dx%d+0+0" % (w, h))
+        frame = Frame(parent, width=w, height=h).place(x=350, y=450)
+        # frame.pack(expand=True)
 
-        #bkgrd = PhotoImage(file="C:\\Users\\kanip\\PycharmProjects\\Desktop\\Bridge_played_cards_after_game.png")
-        #bkgrd_label = Label(frame, image=bkgrd)
-        #bkgrd_label.image = bkgrd
-        #bkgrd_label.place(x=0, y=0, relwidth=1, relheight= 1)
+        # canvas = Canvas(parent, width=w, height=h)
 
-        titleLabel = Label(frame, text="LET'S PLAY BRIDGE",fg ="black" ,font ='Arial 36')
-        titleLabel.pack(side="top",pady = 150)
+        # scale_width = w / 3900
+        # scale_height = h / 2613
+        web = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Login/"
+        URL = "login_background_resized.jpg"
+        u = urlopen(web + URL)
+        raw_data = u.read()
+        u.close()
+        im = Image.open(BytesIO(raw_data))
+        bckgrd = ImageTk.PhotoImage(im)
 
-        loginButton = Button(frame, text="Existing User",fg ="blue",font ="Arial 14",command=lambda: self.LoginScreen(parent))
-        loginButton.pack(side = 'top')
+        login_bckgrd = Label(frame, image=bckgrd)
+        login_bckgrd.image = bckgrd
+        login_bckgrd.place(x=0, y=0, relwidth=1, relheight=1)
 
-        signupButton = Button(frame, text="Sign up", fg ="blue",font ="Arial 14",command= self.SignupScreen)
-        signupButton.pack(side ="top")
+        titleLabel = Label(frame, text="LET'S PLAY BRIDGE", fg="black", font='Arial 36')
+        titleLabel.pack(side="top", pady=150)
 
-        quitButton = Button(frame, text="Quit",font ="Arial 14",command= quit)
+        loginButton = Button(frame, text="Existing User", fg="blue", font="Arial 14", command=lambda: self.LoginScreen(parent))
+        loginButton.pack(side='top')
+
+        signupButton = Button(frame, text="Sign up", fg="blue", font="Arial 14", command=self.SignupScreen)
+        signupButton.pack(side="top")
+
+        quitButton = Button(frame, text="Quit", font="Arial 14", command=quit)
         quitButton.pack(side="top")
-
-        #myProfileButton = Button(frame, text="My Profile", fg="blue", font="Arial 14", command=self.myProfileScreen)
-        #myProfileButton.pack(side="right")
 
     ####################################Login - GUI ###########################
     def LoginScreen(self,parent):
@@ -64,7 +72,7 @@ class MainMenu(Frame):
         passLabel = Label(middleFrame, text='Password:', font="Arial 14")
         entry_user = Entry(middleFrame) # For DB
         entry_pass = Entry(middleFrame, show ='*') # For DB
-        b = Button(bottomFrame, text="Log In",fg ="blue", font ="Arial 14", command=lambda: get_Login_input(self,parent))
+        b = Button(bottomFrame, text="Log In",fg ="blue", font ="Arial 14", command=lambda: get_Login_input(self, parent))
 
         #Location of the Widgets in their frames
         #label.pack(side="top", fill="both", expand=True, padx=20, pady=20)
@@ -81,7 +89,7 @@ class MainMenu(Frame):
             root.mainloop()
 
 
-        def get_Login_input(self,parent):
+        def get_Login_input(self, parent):
             var = dbConnect()
             dbconn = mysql.connect(host=var.host, user=var.user, password=var.password, db=var.db)
             cur = dbconn.cursor()  # Cursor object - required to execute all queries
@@ -273,7 +281,7 @@ class MainMenu(Frame):
         def combined_Functions(self):  # for the Sign Up button - store data, exits Sign Up screen, goes to Tutorial screen
             get_Signup_input()
             # top.destroy()
-            go_to_Tutorial()
+            #go_to_Tutorial()
 
     #####################################My Profile - GUI #########################################
     def myProfileScreen(self):
