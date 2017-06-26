@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Bridge-Application.iml" filepath="$PROJECT_DIR$/.idea/Bridge-Application.iml" />
+      <module fileurl="file://$USER_HOME$/Documents/GitHub/brain/.idea/brain.iml" filepath="$USER_HOME$/Documents/GitHub/brain/.idea/brain.iml" />
     </modules>
   </component>
 </project>

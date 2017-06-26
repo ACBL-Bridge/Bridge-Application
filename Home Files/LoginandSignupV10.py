@@ -3,6 +3,7 @@ import mysql.connector as mysql
 from MySQLdb import dbConnect
 from HomeOOP import *
 import datetime
+from PIL import Image, ImageTk
 
 
 class MainMenu(Frame):
@@ -40,7 +41,7 @@ class MainMenu(Frame):
         signupButton = Button(frame, text="Sign up", fg="blue", font="Arial 14", command=self.SignupScreen)
         signupButton.pack(side="top")
 
-        quitButton = Button(frame, text="Quit", font="Arial 14", command=quit)
+        quitButton = Button(frame, text="Quit", font="Arial 14", command=self.SignupScreen)
         quitButton.pack(side="top")
 
     ####################################Login - GUI ###########################

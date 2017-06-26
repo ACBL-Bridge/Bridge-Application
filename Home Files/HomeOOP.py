@@ -14,16 +14,17 @@ class Home:
         #master.overrideredirect(1)
         master.geometry("%dx%d+0+0" % (width, height))
 
-        self.background_image= PhotoImage(file = "C:\\Python Capstone\\Bgrd-1.png")
-        self.background_label = Label(master, image=self.background_image)
-        self.background_label.image = self.background_image
+        web = "https://raw.githubusercontent.com/ACBL-Bridge/Bridge-Application/master/Home%20Files/"
+        URL = "Bgrd-1.png"
+        u = urlopen(web + URL)
+        raw_data = u.read()
+        u.close()
+        im = Image.open(BytesIO(raw_data))
+        bckgrd = ImageTk.PhotoImage(im)
+
+        self.background_label = Label(master, image=bckgrd)
+        self.background_label.image = bckgrd
         self.background_label.place(x=0,y=0,relwidth=1,relheight=1)
-        '''canvas = Canvas(master, width=width, height=height)
-        canvas.grid(row=0, column=0)
-        photo = PhotoImage(file = "C:\\Python Capstone\\Bgrd-1.png" )
-        label = Label(image=photo)
-        label.image = photo
-        canvas.create_image(0,0, image=photo, anchor = CENTER)'''
 
         #Creates the frame that the four buttons will appear on
         self.buttonFrame = Frame(master, borderwidth=5, relief="sunken",bg="black", width=200, height=300)
@@ -448,7 +449,7 @@ class Home:
 
         #--- Menu Creation ---
 
-        self.menuImage = PhotoImage(file="C:\\Python Capstone\\menu-icon-15.png")
+        self.menuImage = PhotoImage(file="menu-icon-15.png")
         self.displayMenuImage = self.menuImage.subsample(8,8)
         
         self.optionList=['View Profile', 'Tourney Results', 'Tutorial', 'Settings', 'Log Out']
@@ -457,7 +458,7 @@ class Home:
         self.drop = OptionMenu(master, self.menu, *self.optionList)
         self.drop.configure(indicatoron=0, image=self.displayMenuImage)
         self.drop.image=self.menuImage
-        self.drop.place(x=1800, y=0)
+        self.drop.place(x=1200, y=0)
         #self.drop.grid(column=50, row=0)
 
         def callback(*args):
@@ -476,17 +477,17 @@ class Home:
         
 
         #--- Store ---
-        
-        self.storePhoto = PhotoImage(file="C:\\Python Capstone\\market-store-icon.png")
+
+        self.storePhoto = PhotoImage(file="market-store-icon.png")
 
         #Decreases the size of original photo by using every 8th pixel in each row and column
-        self.displayStorePhoto = self.storePhoto.subsample(8,8) 
+        self.displayStorePhoto = self.storePhoto.subsample(8,8)
 
         self.store = Button(master, image=self.displayStorePhoto, command= lambda: StoreScreen())
         self.store.image = self.storePhoto #keep reference to picture, other will be garbage collected
 
-        self.store.place(x=1700, y=870)
-        
+        self.store.place(x=1200, y=600)
+
 
 def main():
     root = Tk()
