@@ -1,6 +1,6 @@
+import tkinter as tk
 from recenter_cards import *
 from replace_image import *
-import time
 
 class StartTrick:
     def __init__(self, parent, canvas, img, display, api, cw, declarer, dummy, s, w, n, e):
@@ -11,6 +11,8 @@ class StartTrick:
         self.contractWindow = cw
         self.declarer = declarer
         self.dummy = dummy
+        self.cardStillMoving = tk.BooleanVar()
+        self.cardStillMoving.set(True)
         self.playIsOver = False
         self.turn = 0
         self.numberOfTricks = 0
@@ -45,9 +47,12 @@ class StartTrick:
             self.roundCards.append(it[0])
             x = (self.canvas.winfo_screenwidth()/2)-((self.img.basewidth/2)-10)
             y = (self.canvas.winfo_screenheight()/2) - (self.img.baseheight/4)
-            self.canvas.coords("current", x, y)
-            # self.cardMotion(it[0], int(x), int(y), 5)
-            self.canvas.tag_raise("current")
+            #self.canvas.coords("current", x, y)
+            self.cardMotion(it[0], int(x), int(y), 1)
+            self.canvas.wait_variable(self.cardStillMoving)
+            self.cardStillMoving.set(True)
+            #self.canvas.tag_raise("current")
+            self.canvas.tag_raise(it[0])
             strCard = self.getStrCardFromItem(it[0], self.s_hand)
             self.recenter.recenterCard_line_ns(it[0], self.s_hand)
             self.start_tricks(None, strCard)
@@ -59,9 +64,12 @@ class StartTrick:
             self.roundCards.append(it[0])
             x = (self.canvas.winfo_screenwidth() / 2) - (self.img.basewidth/2)
             y = (self.canvas.winfo_screenheight() / 2) - self.img.baseheight
-            self.canvas.coords("current", x, y)
-            #self.cardMotion(it[0], int(x), int(y), 5)
-            self.canvas.tag_raise("current")
+            #self.canvas.coords("current", x, y)
+            self.cardMotion(it[0], int(x), int(y), 1)
+            self.canvas.wait_variable(self.cardStillMoving)
+            self.cardStillMoving.set(True)
+            # self.canvas.tag_raise("current")
+            self.canvas.tag_raise(it[0])
             strCard = self.getStrCardFromItem(it[0], self.n_hand)
             self.recenter.recenterCardN(it[0],self.n_hand)
             self.start_tricks(None, strCard)
@@ -96,8 +104,10 @@ class StartTrick:
         # move card
         x = (self.canvas.winfo_screenwidth() / 2) - (self.img.basewidth / 2)
         y = (self.canvas.winfo_screenheight() / 2) - self.img.baseheight
-        self.canvas.coords(cardID, x, y)
-        #self.cardMotion(cardID, int(x), int(y), 5)
+        #self.canvas.coords(cardID, x, y)
+        self.cardMotion(cardID, int(x), int(y), 1)
+        self.canvas.wait_variable(self.cardStillMoving)
+        self.cardStillMoving.set(True)
         self.canvas.tag_raise(cardID)
 
         self.recenter.recenterCard_line_ns(cardID, self.n_hand)
@@ -113,8 +123,10 @@ class StartTrick:
         # move card
         x = self.canvas.winfo_screenwidth() / 2
         y = (self.canvas.winfo_screenheight() / 2) - ((3 * self.img.baseheight) / 4)
-        self.canvas.coords(cardID, x, y)
-        # self.cardMotion(cardID, int(x), int(y), 5)
+        #self.canvas.coords(cardID, x, y)
+        self.cardMotion(cardID, int(x), int(y), 1)
+        self.canvas.wait_variable(self.cardStillMoving)
+        self.cardStillMoving.set(True)
         self.canvas.tag_raise(cardID)
         if self.dummy == 'e':
             self.recenter.recenterCardE(cardID, self.e_hand)
@@ -131,8 +143,11 @@ class StartTrick:
         # move card
         x = (self.canvas.winfo_screenwidth() / 2) - self.img.basewidth
         y = (self.canvas.winfo_screenheight() / 2) - (self.img.baseheight / 2)
-        self.canvas.coords(cardID, x, y)
-        # self.cardMotion(cardID, int(x), int(y), 5)
+        #self.canvas.coords(cardID, x, y)
+        self.cardMotion(cardID, int(x), int(y), 1)
+        self.canvas.wait_variable(self.cardStillMoving)
+        self.cardStillMoving.set(True)
+
         self.canvas.tag_raise(cardID)
         if self.dummy == 'w':
             self.recenter.recenterCardW(cardID, self.w_hand)
@@ -175,6 +190,7 @@ class StartTrick:
                 print("Card: ")
                 print(card)
                 if self.current_leader == 0:
+                    #add if statement for first trick to show dummy cards
                     print("South is the leader")
                     self.setLead(self.current_player, card)
                     print("Lead: "+ str(self.lead))
@@ -202,6 +218,7 @@ class StartTrick:
             print("you are in west")
             print(templst)
             if self.current_leader == 1:
+                # add if statement for first trick to show dummy cards
                 templst = self.trickApi.enter_trick_loop('None')
                 self.setLead(self.current_player, templst[1][0])
             else:
@@ -227,6 +244,7 @@ class StartTrick:
                 print("North is robot")
                 # here API is returning N & E cards
                 if self.current_leader == 2:
+                    # add if statement for first trick to show dummy cards
                     templst = self.trickApi.enter_trick_loop('None')
                     self.setLead(self.current_player, templst[1][0])
 
@@ -271,6 +289,7 @@ class StartTrick:
         elif self.current_player == 3:
             print("you are in east")
             if self.current_leader == 3:
+                # add if statement for first trick to show dummy cards
                 templst = self.trickApi.enter_trick_loop('None')
                 self.setLead(self.current_player, templst[1][0])
             else:
@@ -290,11 +309,17 @@ class StartTrick:
     def endOfTurn(self, winner):
         self.destroy_cards_after_round()
         self.updateTrickWins(winner)
-        self.current_leader = self.getPlayerInt(winner)
+        self.current_leader = self.getPlayerInt(winner.lower())
+        if self.current_leader == 0:
+            self.current_leader = 3
+        else:
+            self.current_leader -= 1
+
         self.current_player = self.current_leader
         self.lead = ''
         self.isTurnOver = False
         print("Trick Round finished")
+        print("winner: " + str(winner))
         print(str(self.trickNS)+" " + str(self.trickWE))
         print("leader: "+ str(self.current_leader))
         print("player: " + str(self.current_player))
@@ -307,7 +332,7 @@ class StartTrick:
             self.contractWindow.add_ns(self.trickNS)
         else:
             self.trickWE += 1
-            self.contractWindow.add_ns(self.trickWE)
+            self.contractWindow.add_we(self.trickWE)
 
     def isNRobot(self, d):
         if d == 'n' or d == 's':
@@ -457,4 +482,35 @@ class StartTrick:
 
         if (new_x, new_y) != (dx, dy):
             self.canvas.after(speed, self.cardMotion, cardID, endX, endY, speed)
+        else:
+            self.cardStillMoving.set(False)
 
+    def trick_system(self, cards, dealer):
+        highestCard = ''
+        leadSuit =''
+        thereIsTrumpSuit = False
+
+        for card in cards:
+            if thereIsTrumpSuit:
+                if card[-1:] == self.lead:
+                    if int(card[:-1]) > int(highestCard[:-1]):
+                        highestCard = card
+            else:
+                if highestCard != '':
+                    if card[-1:] == leadSuit:
+                        if int(card[:-1]) > int(highestCard[:-1]):
+                            highestCard = card
+                    else:
+                        if card[-1:] == self.lead:
+                            highestCard = card
+                            thereIsTrumpSuit = True
+                else:
+                    highestCard = card
+                    leadSuit = card[-1:]
+                    if card[-1:] == self.lead:
+                        thereIsTrumpSuit = True
+
+        idx = cards.index(highestCard)
+        winner = (dealer + idx) % 4
+
+        return winner

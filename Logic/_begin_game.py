@@ -94,11 +94,13 @@ class RoundStart:
 
          if aresult[0] == 1:
             self.auctioncomplete = 1
-            self.curplayer = self.pov[(bgame.self.index(aresult[3]) + 1) % 4]
-            self.declarer = self.pov[(bgame.self.index(aresult[3]))]
+            # self.curplayer = self.pov[(bgame.self.index(aresult[3]) + 1) % 4]
+            self.curplayer = self.pov[(self.pov.index(aresult[3]) + 1) % 4]
+            # self.declarer = self.pov[(bgame.self.index(aresult[3]))]
+            self.declarer = self.pov[(self.pov.index(aresult[3]))]
             self.trump = self.asession[4]
 
-         return [aresult[0], aresult[2]]
+         return [aresult[0], aresult[2], aresult[3], aresult[4]]
 
     def enter_trick_loop(self, card):
         userInput = card
@@ -118,6 +120,7 @@ class RoundStart:
             self.trickscomplete = 1
 
         # tresult list = Session boolean, AI Moveset, Latest Trick Winner
+        print("before returning")
         return [tresult[0], tresult[2], tresult[5]]
 # Testing
 # Assumptions: Human player is always South and dealer, human player is never dummy. For now human always goes first.
